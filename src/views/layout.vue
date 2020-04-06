@@ -126,9 +126,7 @@
                 </div>
               </el-header>
               <el-main>
-                <keep-alive>
-                  <router-view></router-view>
-                </keep-alive>
+                <router-view></router-view>
               </el-main>
             </el-container>
           </el-main>
@@ -162,13 +160,13 @@ export default {
       let Teach_Soft_Env = localStorage.getItem('Teach_Soft_Env')
       if (Teach_Hard_Env) {
         let value = '硬件环境：' + Teach_Hard_Env
-        json['Teach_Env'].replace('硬件环境：', value)
+        json['Teach_Env'] = json['Teach_Env'].replace('硬件环境：', value)
       }
       if (Teach_Soft_Env) {
         let value = '软件环境：' + Teach_Soft_Env
-        json['Teach_Env'].replace('软件环境：', value)
+        json['Teach_Env'] = json['Teach_Env'].replace('软件环境：', value)
       }
-      console.log('json:', json)
+      console.log('json:', json['Teach_Env'])
       let modes = [
         'Course_Brief',
         'Academic_Analysis',
