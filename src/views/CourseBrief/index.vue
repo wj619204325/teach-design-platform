@@ -125,7 +125,6 @@
                           :config="config"></vue-ueditor-wrap>
       </div>
     </div>
-
   </div>
 </template>
 <script>
