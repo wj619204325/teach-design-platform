@@ -1,16 +1,16 @@
-import Vue from 'vue'
+import vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import ELEMENT from 'element-ui';
+import ELEMENTUI from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css';
 import './styles/index.scss'
-Vue.config.productionTip = false
+vue.config.productionTip = false
 // require('./mock/index')
 import initEditData from './initEditData'
 initEditData.init()
-Vue.use(ELEMENT);
-new Vue({
+vue.use(ELEMENTUI);
+new vue({
   router,
   store,
   render: h => h(App)

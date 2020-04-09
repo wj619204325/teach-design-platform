@@ -8,14 +8,14 @@ const ParalleeUglifyPlugin = require('webpack-parallel-uglify-plugin')
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/teach-design-platform/' : '/',
   lintOnSave: false,
+
   configureWebpack: {
     externals: {
       /**
        * 这里采用Object的形式
        * 更多的形式参考(https://webpack.js.org/configuration/externals/#src/components/Sidebar/Sidebar.jsx)
-       * key: 依赖包的名字
-       * value: 依赖包挂载在项目中的变量名
-       * 挂载的变量必须与依赖包中挂载的一样，在项目中使用也是这个变量名
+       * key: 指的是在import xxx from 'xxx'中 from后面的'xxx'
+       * value: 指的是模块对外暴露的变量名，一般是固定的
        */
       'vue': 'Vue',
       'vue-router': 'VueRouter',
@@ -23,6 +23,7 @@ module.exports = {
       'element-ui': 'ELEMENT'
     }
   },
+
   chainWebpack: (config) => {
     config.resolve.alias
       .set('@', resolve('src'))
@@ -62,12 +63,17 @@ module.exports = {
           warnings: false,
         }
       }])
-    config
-      .plugin('webpack-bundle-analyzer')
-      .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+    if (process.env.use_analyzer) {
+      config
+        .plugin('webpack-bundle-analyzer')
+        .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+        .end()
+    }
   },
+
   devServer: {
     hot: true,
     compress: true
-  }
+  },
+  productionSourceMap: false,
 }
