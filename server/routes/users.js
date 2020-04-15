@@ -18,7 +18,7 @@ router.post('/signup', async (ctx) => {
     code
   } = ctx.request.body;
   //验证是否填写信息
-  if (!username || !password || !email || code) {
+  if (!username || !password || !email || !code) {
     ctx.body = {
       code: -1,
       msg: '请填写完整的信息'
@@ -32,6 +32,7 @@ router.post('/signup', async (ctx) => {
   if (has_email !== null) {
     ctx.body = {
       code: -1,
+      errorInput: 'username',
       msg: '该邮箱已被注册'
     }
     return false
@@ -43,6 +44,7 @@ router.post('/signup', async (ctx) => {
   if (has_username !== null) {
     ctx.body = {
       code: -1,
+      errorInput: 'username',
       msg: '该用户名已被注册'
     }
     return false
@@ -58,6 +60,7 @@ router.post('/signup', async (ctx) => {
       if (new Date().getTime() - saveExpire > 0) {
         ctx.body = {
           code: -1,
+          errorInput: 'code',
           msg: '验证码已过期，请重新尝试'
         }
         return false
@@ -65,6 +68,7 @@ router.post('/signup', async (ctx) => {
     } else {
       ctx.body = {
         code: -1,
+        errorInput: 'code',
         msg: '验证码错误'
       }
       return false
@@ -72,6 +76,7 @@ router.post('/signup', async (ctx) => {
   } else {
     ctx.body = {
       code: -1,
+      errorInput: 'code',
       msg: '请填写验证码'
     }
     return false
@@ -86,7 +91,8 @@ router.post('/signup', async (ctx) => {
   if (newUser) {
     ctx.body = {
       code: 0,
-      msg: '注册成功'
+      msg: '注册成功',
+      data: {}
     }
   } else {
     ctx.body = {
@@ -97,17 +103,24 @@ router.post('/signup', async (ctx) => {
 })
 //给用户邮箱发送验证码
 router.post('/verify', async (ctx, next) => {
-  const {
-    username,
+  const email = ctx.request.body.email
+  //验证邮箱是否已被注册
+  let has_email = await UserModel.findOne({
     email
-  } = ctx.request.body
-  const saveExpire = await Store.hget(`nodemail:${email}`, 'expire')
-  global.console.log("expire:", saveExpire)
-  global.console.log("Now:", new Date().getTime())
-  if (saveExpire && new Date().getTime() - saveExpire < 0) {
+  })
+  if (has_email !== null) {
     ctx.body = {
       code: -1,
-      msg: '验证请求过于频繁，10分钟内1次'
+      msg: '该邮箱已被注册'
+    }
+    return false
+  }
+  const saveExpire = await Store.hget(`nodemail:${email}`, 'expire')
+  const isInOneMin = saveExpire ? saveExpire - new Date().getTime() > 9 * 60 * 1000 : false
+  if (isInOneMin) {
+    ctx.body = {
+      code: -1,
+      msg: '验证请求过于频繁，1分钟内1次'
     }
     return false
   }
@@ -122,12 +135,11 @@ router.post('/verify', async (ctx, next) => {
       pass: Email.smtp.pass
     }
   })
-  //接收方信息
+  //注册者信息
   let receiver = {
     code: Email.smtp.code(),
     expire: Email.smtp.expire(),
-    email: email,
-    username: username
+    email: email
   }
   let mailOptions = {
     from: `教学设计软件平台<1120681908@qq.com>`,
@@ -137,22 +149,23 @@ router.post('/verify', async (ctx, next) => {
     
     如有问题，请通过邮件联系hanlong.liao@foxmail.com，邮件中请注明个人信息`
   }
-  await transporter.sendMail(mailOptions, (err, info) => {
+  await transporter.sendMail(mailOptions, async (err, info) => {
     if (err) {
       ctx.body = {
         code: -1,
         msg: `邮件发送失败：${err}`
       }
-      return console.log('邮件发送失败：', err)
+      global.console.log('邮件发送失败：', err)
     } else {
-      Store.hmset(`nodemail:${receiver.email}`, 'code', receiver.code, 'expire', receiver.expire, 'username', username)
-      ctx.body = {
-        code: 0,
-        msg: '验证码已发送，可能会有延时，有效期10分钟'
-      }
+      //将一个准用户的信息缓存到redis
+      Store.hmset(`nodemail:${receiver.email}`, 'code', receiver.code, 'expire', receiver.expire)
     }
   })
-
+  ctx.body = {
+    code: 0,
+    msg: '验证码已发送，有效期10分钟',
+    data: {}
+  }
 })
 //登录
 router.post('/signin', async (ctx, next) => {
@@ -160,12 +173,14 @@ router.post('/signin', async (ctx, next) => {
   if (ctx.isAuthenticated()) {
     ctx.body = {
       code: 0,
-      msg: '已经登录了'
+      msg: '已经登录了',
+      data: {}
     }
     return false
   }
   return Passport.authenticate('local', function (err, user, info, status) {
     if (err) {
+      global.console.log("passport.err:", err)
       ctx.body = {
         code: -1,
         msg: err
@@ -183,6 +198,7 @@ router.post('/signin', async (ctx, next) => {
         //passport中间件自带的登录函数（3x以前为ctx.req.login）
         return ctx.login(user)
       } else {
+        global.console.log("passport.info:", info)
         ctx.body = {
           code: -1,
           msg: info
@@ -202,7 +218,8 @@ router.get('/logout', async (ctx, next) => {
   if (!ctx.isAuthenticated()) {
     ctx.body = {
       code: 0,
-      msg: '登出成功'
+      msg: '登出成功',
+      data: {}
     }
   } else {
     ctx.body = {

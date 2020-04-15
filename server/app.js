@@ -15,7 +15,6 @@ import passport from './utils/passport'
 import Redis from 'koa-redis'
 import cors from 'koa2-cors'
 
-import pv from './middleware/koa-pv'
 const app = new Koa()
 // error handler
 onerror(app)
@@ -31,7 +30,6 @@ app.use(session({
 app.use(bodyparser({
   enableTypes: ['json', 'form', 'text']
 }))
-app.use(pv())
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
@@ -49,8 +47,8 @@ app.use(async (ctx, next) => {
 })
 //跨域
 app.use(cors({
-  origin: function (ctx) {
-    return '*';
+  origin: (ctx) => {
+    return 'http://localhost:8080'
   },
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
   maxAge: 5,

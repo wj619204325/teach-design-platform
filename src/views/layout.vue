@@ -57,47 +57,47 @@
                      class="menu"
                      router
                      background-color="#E4E4E4">
-              <el-menu-item index="/CourseBrief">
+              <el-menu-item index="/design/CourseBrief">
                 <i class="el-icon-document"></i>
                 <span slot="title">课程简介
                 </span>
               </el-menu-item>
-              <el-menu-item index="/AcademicAnalysis">
+              <el-menu-item index="/design/AcademicAnalysis">
                 <i class="el-icon-data-analysis"></i>
                 <span slot="title">学情分析
                 </span>
               </el-menu-item>
-              <el-menu-item index="/TeachDemand">
+              <el-menu-item index="/design/TeachDemand">
                 <i class="el-icon-s-flag"></i>
                 <span slot="title">教学目标
                 </span>
               </el-menu-item>
-              <el-menu-item index="/TeachHard">
+              <el-menu-item index="/design/TeachHard">
                 <i class="el-icon-question"></i>
                 <span slot="title">教学重难点
                 </span>
               </el-menu-item>
-              <el-menu-item index="/TeachEnv">
+              <el-menu-item index="/design/TeachEnv">
                 <i class="el-icon-s-claim"></i>
                 <span slot="title">教学环境
                 </span>
               </el-menu-item>
 
-              <el-submenu index="/TeachFlow">
+              <el-submenu index="/design/TeachFlow">
                 <template slot="title">
                   <i class="el-icon-s-promotion"></i>
                   <span>教学流程</span>
                 </template>
-                <el-menu-item index="/TeachFlow">PBL</el-menu-item>
+                <el-menu-item index="/design/TeachFlow">PBL</el-menu-item>
 
               </el-submenu>
 
-              <el-submenu index="/TeachEvaluate">
+              <el-submenu index="/design/TeachEvaluate">
                 <template slot="title">
                   <i class="el-icon-edit-outline"></i>
                   <span>教学评价</span>
                 </template>
-                <el-menu-item index="/TeachEvaluate">教师评价</el-menu-item>
+                <el-menu-item index="/design/TeachEvaluate">教师评价</el-menu-item>
               </el-submenu>
             </el-menu>
           </el-aside>
