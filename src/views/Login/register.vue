@@ -8,7 +8,10 @@
              hide-required-asterisk
              label-position="left">
       <div class="title-container">
-        <h3 class="title">注 册</h3>
+        <h1 class="title">
+          注 册
+          <span>已有账号？<router-link to="/login">点此登录</router-link></span>
+        </h1>
       </div>
       <el-form-item prop="email">
         <el-input ref="email"
@@ -272,11 +275,20 @@ $light_gray: #eee;
     position: relative;
 
     .title {
-      font-size: 26px;
       color: $light_gray;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
+      span {
+        position: absolute;
+        font-size: 16px;
+        right: 0;
+        bottom: 0;
+        a {
+          text-decoration: none;
+          color: #409eff;
+        }
+      }
     }
   }
 

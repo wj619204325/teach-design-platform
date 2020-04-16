@@ -7,7 +7,10 @@
              auto-complete="on"
              label-position="left">
       <div class="title-container">
-        <h3 class="title">登 录</h3>
+        <h1 class="title">
+          登 录
+          <span>没有账号？<router-link to="/register">点此注册</router-link></span>
+        </h1>
       </div>
       <el-form-item prop="username">
         <div class="icon-container">
@@ -81,7 +84,11 @@ export default {
             password: CryptoJS.MD5(this.loginForm.password).toString()
           })
             .then(data => {
-              console.log("login-res:", data)
+              let username = data.username
+              localStorage.setItem('username', username)
+              this.$router.push({
+                name: 'home'
+              })
               this.loginErrMsg = ''
               this.loading = false
             })
@@ -187,11 +194,20 @@ $light_gray: #eee;
     position: relative;
 
     .title {
-      font-size: 26px;
       color: $light_gray;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
+      span {
+        position: absolute;
+        font-size: 16px;
+        right: 0;
+        bottom: 0;
+        a {
+          text-decoration: none;
+          color: #409eff;
+        }
+      }
     }
   }
 

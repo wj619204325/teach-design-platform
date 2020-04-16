@@ -8,13 +8,15 @@
       <router-link class="navItem"
                    active-class="active"
                    to="/">工作流</router-link>
-      <el-dropdown>
+      <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
-          更多<i class="el-icon-arrow-down el-icon--right"></i>
+          {{username}}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-s-tools">修改密码</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-warning">退出登录</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-key"
+                            command="modifyPwd">修改密码</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-switch-button"
+                            command="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-header>
@@ -138,13 +140,16 @@
 
 <script>
 import { html_to_word } from './HtmlToWord'
+import { Logout } from '@/api'
 export default {
   data () {
+    let login_name = localStorage.getItem('username')
     return {
       filterText: '',
       activeName: 'first',
       isExportDisable: false,
-      exportLoading: false
+      exportLoading: false,
+      username: login_name || '用户名'
     }
   },
   watch: {
@@ -193,6 +198,24 @@ export default {
             window.location.reload()
           })
         })
+    },
+    logout: function () {
+      Logout().then(() => {
+        localStorage.removeItem('username')
+        this.$router.push('/login')
+      })
+    },
+    handleCommand: function (command) {
+      switch (command) {
+        case 'logout':
+          this.logout()
+          break;
+        case 'modifyPwd':
+          this.$alert('该功能尚未完善，敬请期待！', '开发者提示', {
+            confirmButtonText: '确定'
+          })
+          break
+      }
     }
   }
 };
@@ -242,6 +265,8 @@ export default {
     .el-dropdown {
       float: right;
       height: 42px;
+      font-size: 18px;
+      cursor: pointer;
       .el-dropdown-link {
         color: #fff;
       }

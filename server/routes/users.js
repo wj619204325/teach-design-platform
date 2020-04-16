@@ -191,7 +191,7 @@ router.post('/signin', async (ctx, next) => {
           code: 0,
           msg: '登陆成功',
           data: {
-            user: user.username,
+            username: user.username,
             email: user.email
           }
         }
@@ -218,13 +218,13 @@ router.get('/logout', async (ctx, next) => {
   if (!ctx.isAuthenticated()) {
     ctx.body = {
       code: 0,
-      msg: '登出成功',
+      msg: '退出成功',
       data: {}
     }
   } else {
     ctx.body = {
       code: -1,
-      msg: '登出失败'
+      msg: '退出失败'
     }
   }
 })
