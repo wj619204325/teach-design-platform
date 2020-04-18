@@ -5,11 +5,8 @@
 </template>
 
 <script>
-import LayOut from 'views/layout.vue'
 export default {
-  components: {
-    LayOut
-  }
+
 };
 </script>
 <style lang="scss">

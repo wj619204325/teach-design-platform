@@ -36,3 +36,39 @@ export const Logout = () => {
     url: '/users/logout'
   })
 }
+
+//获取文件信息
+export const GetFile = (id) => {
+  return request({
+    url: '/file/getFile',
+    params: {
+      id
+    }
+  })
+}
+//重命名文件名
+export const RenameFile = (data) => {
+  return request({
+    url: '/file/renameFile',
+    method: 'post',
+    data: data
+  })
+}
+
+//下载文件
+export const DownloadFile = (id) => {
+  return request({
+    url: '/file/download',
+    params: {
+      id
+    }
+  })
+}
+//分享文件
+export const ShareFile = (data) => {
+  return request({
+    url: '/file/share',
+    method: 'post',
+    data: data
+  })
+}
