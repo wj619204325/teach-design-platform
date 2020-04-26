@@ -20,7 +20,7 @@ module.exports = {
       repo: 'git@github.com:BNK-ALONG/teach-design-platform.git', //远程仓库
       ssh_options: 'StrictHostKeyChecking=no', //SSH 公钥检查
       path: '/home/web/teach-design-platform', //部署的项目在服务器上的路径
-      'post-deploy': 'git pull && ./run.sh  && pm2 reload ecosystem.config.js --env production',
+      'post-deploy': 'git pull && chmod 777 ./run.sh && ./run.sh && pm2 reload ecosystem.config.js --env production',
     }
   }
 };
