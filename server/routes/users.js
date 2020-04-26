@@ -192,7 +192,8 @@ router.post('/signin', async (ctx, next) => {
           msg: '登陆成功',
           data: {
             username: user.username,
-            email: user.email
+            email: user.email,
+            session: user._id
           }
         }
         //passport中间件自带的登录函数（3x以前为ctx.req.login）
@@ -250,5 +251,6 @@ router.get('/getUserInfo', async (ctx) => {
     }
   }
 })
+
 
 export default router

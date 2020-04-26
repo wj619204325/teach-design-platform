@@ -2,11 +2,9 @@
 .teach-env-wrap {
   height: 100%;
   width: 100%;
-  .half-part {
-    width: 100%;
-    height: 50%;
-  }
   .top-half {
+    width: 100%;
+    height: 44%;
     border-bottom: 1px solid #c2c5cb;
   }
   .content {
@@ -15,7 +13,7 @@
     margin: 0 auto;
     position: relative;
     .env {
-      height: 40%;
+      height: 50%;
       padding-top: 25px;
       .el-divider {
         margin: auto;
@@ -42,24 +40,29 @@
     color: #fff;
     border-radius: 10px;
     border: 1px solid #ebeef5;
+    font-weight: bolder;
   }
   .intro-content:hover {
     box-shadow: 3px 3px 10px #888888;
   }
-  .env-check-wrap {
-    padding-top: 30px;
-    padding-left: 10%;
-    .checkgroup-input {
-      margin-top: 20px;
-      div {
-        display: inline-block;
+  .el-row {
+    height: 100%;
+  }
+  .soft-env {
+    border-left: 2px dashed #dcdfe6;
+  }
+  .env-select-col {
+    padding: 20px 40px;
+    height: 100%;
+    .env-select-container {
+      width: 100%;
+      padding: 0 30px;
+      .env-select {
+        width: 100%;
       }
-      input {
-        border: none;
-        border-bottom: 1px solid grey;
-        border-radius: 0;
-        font-size: 16px;
-        transform: translate(10px, -10px);
+      p {
+        font-size: 14px;
+        margin: 2em 0;
       }
     }
   }
@@ -105,62 +108,61 @@
 
       </div>
     </div>
-    <!-- 编辑区 -->
-    <div class="half-part bottom-half">
-      <!-- 教师编辑区 -->
-      <div class="content">
-        <div class="env">
-          <el-divider content-position="left">硬件环境</el-divider>
-          <div class="env-check-wrap">
-            <el-checkbox :indeterminate="isIndeterminate1"
-                         v-model="checkAllHard"
-                         @change="checkAllHardChange">全选</el-checkbox>
-            <div class="checkgroup-input">
-              <el-checkbox-group v-model="checkedHardTypes"
-                                 @change="checkedHardTypesChange">
-                <el-checkbox v-for="type in hardTypes"
-                             :label="type"
-                             :key="type">{{type}}</el-checkbox>
-
-              </el-checkbox-group>
-              <el-input style="width:auto;"
-                        v-show="isOtherHard"
-                        v-model="otherHardType"
-                        placeholder="请输入其他环境"></el-input>
-            </div>
-          </div>
+    <!-- 教师编辑区 -->
+    <el-row>
+      <el-col :span="12"
+              class="env-select-col">
+        <el-divider content-position="left">硬件环境</el-divider>
+        <div class="env-select-container">
+          <p>提示：可以输入自定义环境，并按回车(Enter)添加。</p>
+          <el-select v-model="hardTypeVal"
+                     ref="hardSelect"
+                     multiple
+                     filterable
+                     allow-create
+                     class="env-select"
+                     popper-class="popper-select"
+                     default-first-option
+                     placeholder="请选择硬件环境">
+            <el-option v-for="item in hardTypes"
+                       :key="item"
+                       :label="item"
+                       :value="item">
+            </el-option>
+          </el-select>
         </div>
-        <div class="env">
-          <el-divider content-position="left">软件环境</el-divider>
-          <div class="env-check-wrap">
-            <el-checkbox :indeterminate="isIndeterminate2"
-                         v-model="checkAllSoft"
-                         @change="checkAllSoftChange">全选</el-checkbox>
-            <div class="checkgroup-input">
-              <el-checkbox-group v-model="checkedSoftTypes"
-                                 @change="checkedSoftTypesChange">
-                <el-checkbox v-for="type in softTypes"
-                             :label="type"
-                             :key="type">{{type}}</el-checkbox>
-
-              </el-checkbox-group>
-              <el-input style="width:auto;"
-                        v-show="isOtherSoft"
-                        v-model="otherSoftType"
-                        placeholder="请输入其他环境"></el-input>
-            </div>
-          </div>
+      </el-col>
+      <el-col :span="12"
+              class="env-select-col soft-env">
+        <el-divider content-position="left">软件环境</el-divider>
+        <div class="env-select-container">
+          <p>提示：可以输入自定义环境，并按回车(Enter)添加。</p>
+          <el-select v-model="softTypeVal"
+                     multiple
+                     filterable
+                     allow-create
+                     class="env-select"
+                     default-first-option
+                     placeholder="请选择软件环境">
+            <el-option v-for="item in softTypes"
+                       :key="item"
+                       :label="item"
+                       :value="item">
+            </el-option>
+          </el-select>
         </div>
-
-      </div>
-    </div>
+      </el-col>
+    </el-row>
 
   </div>
 </template>
 <script>
 import {
-  set_localStorage_checkedEnv
+  set_localStorage_checkedEnv,
+  get_localStorage_checkedEnv
 } from 'views/HtmlToWord.js'
+import { UpdateModule } from '@/api'
+
 export default {
   data () {
     return {
@@ -201,97 +203,62 @@ export default {
           }
         ]
       },
-      checkAllHard: false,
-      checkAllSoft: false,
-      checkedHardTypes: [],
-      checkedSoftTypes: [],
-      hardTypes: ['视频会议系统', '基础网络系统', '智能交互系统', '其他'],
-      softTypes: ['iBook', '问卷星', '几何画板', 'MOOC', '网络学习空间', '其他'],
-      isIndeterminate1: true,
-      isIndeterminate2: true,
-      isOtherHard: false,
-      otherHardType: '',
-      isOtherSoft: false,
-      otherSoftType: ''
+      hardTypes: ['视频会议系统', '基础网络系统', '智能交互系统'],
+      softTypes: ['iBook', '问卷星', '几何画板', 'MOOC', '网络学习空间'],
+      hardTypeVal: get_localStorage_checkedEnv('Teach_Hard_Env'),
+      softTypeVal: get_localStorage_checkedEnv('Teach_Soft_Env')
     }
   },
   watch: {
-    'checkedHardTypes': function (newVal, oldVal) {
-      let clone = newVal.filter(item => item !== '其他')
-      set_localStorage_checkedEnv('Teach_Hard_Env', clone)
+    'hardTypeVal': function (newVal) {
+      let key = 'Teach_Hard_Env'
+      this.$store.commit('SAVED')
+      set_localStorage_checkedEnv(key, newVal)
+      let id = localStorage.getItem('file_id')
+      UpdateModule({
+        id,
+        module: key,
+        value: newVal.join('、')
+      }).then(() => {
+        setTimeout(() => {
+          this.$store.commit('SAVED')
+        }, 500);
+      }).catch(err => {
+        console.log(err)
+        setTimeout(() => {
+          this.$store.commit('SAVED')
+        }, 500);
+      })
     },
-    'checkedSoftTypes': function (newVal, oldVal) {
-      let clone = newVal.filter(item => item !== '其他')
-      set_localStorage_checkedEnv('Teach_Soft_Env', clone)
+    'softTypeVal': function (newVal) {
+      let key = 'Teach_Soft_Env'
+      this.$store.commit('SAVED')
+      set_localStorage_checkedEnv(key, newVal)
+      let id = localStorage.getItem('file_id')
+      UpdateModule({
+        id,
+        module: key,
+        value: newVal.join('、')
+      }).then(() => {
+        setTimeout(() => {
+          this.$store.commit('SAVED')
+        }, 500);
+      }).catch(err => {
+        console.log(err)
+        setTimeout(() => {
+          this.$store.commit('SAVED')
+        }, 500);
+      })
     },
-    'otherHardType': function (newVal, oldVal) {
-      if (this.isOtherHard) {
-        let cur_Env = this.checkedHardTypes.filter(item => item !== '其他')
-        cur_Env.push(newVal)
-        set_localStorage_checkedEnv('Teach_Hard_Env', cur_Env)
-      }
-    },
-    'otherSoftType': function (newVal, oldVal) {
-      if (this.isOtherSoft) {
-        let cur_Env = this.checkedSoftTypes.filter(item => item !== '其他')
-        cur_Env.push(newVal)
-        set_localStorage_checkedEnv('Teach_Soft_Env', cur_Env)
-      }
-    },
-    'isOtherHard': function (newVal, oldVal) {
-      if (!newVal) {
-        this.otherHardType = ''
-      }
-    },
-    'isOtherSoft': function (newVal, oldVal) {
-      if (!newVal) {
-        this.otherSoftType = ''
-      }
-    }
+
   },
   methods: {
-    checkAllHardChange (val) {
-      if (val) {
-        this.checkedHardTypes = this.hardTypes
-        this.isOtherHard = true
-      }
-      else {
-        this.checkedHardTypes = []
-        this.isOtherHard = false
-      }
-      // 一旦点击“全选”框，则状态就确定了
-      this.isIndeterminate1 = false;
-    },
-    checkedHardTypesChange (value) {
-      let checkedCount = value.length;
-      this.checkAllHard = checkedCount === this.hardTypes.length;
-      //如果选择了其他，则显示输入框
-      this.isOtherHard = this.checkedHardTypes.findIndex(item => item === '其他') !== -1
-      //如果没有选完则“全选”框为不确定状态
-      this.isIndeterminate1 = checkedCount > 0 && checkedCount < this.hardTypes.length;
-    },
-    checkAllSoftChange (val) {
-      if (val) {
-        this.checkedSoftTypes = this.softTypes
-        this.isOtherSoft = true
-      }
-      else {
-        this.checkedSoftTypes = []
-        this.isOtherSoft = false
-      }
-      // 一旦点击“全选”框，则状态就确定了
-      this.isIndeterminate2 = false;
-    },
-    checkedSoftTypesChange (value) {
-      let checkedCount = value.length;
-      this.checkAllSoft = checkedCount === this.softTypes.length;
-      this.isOtherSoft = this.checkedSoftTypes.findIndex(item => item === '其他') !== -1
-      //如果没有选完则“全选”框为不确定状态
-      this.isIndeterminate2 = checkedCount > 0 && checkedCount < this.softTypes.length;
-    }
+
   },
   mounted () {
-
+    this.$nextTick(() => {
+      this.$refs['hardSelect'].focus()
+    })
   }
 }
 </script>

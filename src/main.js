@@ -3,7 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import ELEMENTUI from 'element-ui';
-// import 'element-ui/lib/theme-chalk/index.css';
+if (process.env.NODE_ENV !== 'production') {
+  require('element-ui/lib/theme-chalk/index.css')
+}
 import './styles/index.scss'
 vue.config.productionTip = false
 // require('./mock/index')

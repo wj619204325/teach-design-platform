@@ -2,28 +2,12 @@
 .teach-hard-wrap {
   height: 100%;
   width: 100%;
-  p {
-    font-size: 18px;
-    line-height: 1.5;
-    text-indent: 2em;
-  }
   .half-part {
     width: 100%;
   }
   .top-half {
     border-bottom: 1px solid #c2c5cb;
     height: 35%;
-    .example-content {
-      width: 40%;
-      height: 100%;
-      margin: 0 auto;
-      position: relative;
-      .el-button {
-        position: absolute;
-        bottom: 20px;
-        right: 10px;
-      }
-    }
   }
   .bottom-half {
     height: 65%;
@@ -43,10 +27,10 @@
       <div class="example-content">
         <p>课程重难点列举教学计划部分中需要重点强调的内容，包括知识内容的重难点和课程活动推进与管理的重难点。</p>
         <el-button type="primary"
-                   @click="exampleDialogVisiable=true">范例</el-button>
-        <el-dialog title="范例"
+                   @click="exampleDialogVisiable=true">范 例</el-button>
+        <el-dialog title="范  例"
                    :visible.sync="exampleDialogVisiable"
-                   width="50%"
+                   class="example-dialog"
                    center>
           <p>本课程教学重难点为：</p>
           <p>1、知识内容的重难点：</p>
@@ -67,7 +51,7 @@
     <div class="half-part bottom-half">
       <!-- 教师编辑区 -->
       <div class="editor-container">
-        <vue-ueditor-wrap v-model="editContent"
+        <vue-ueditor-wrap v-model="Content"
                           mode="observer"
                           :observerDebounceTime="observerDebounceTime"
                           :config="config"></vue-ueditor-wrap>
@@ -79,8 +63,8 @@
 <script>
 import VueUeditorWrap from 'vue-ueditor-wrap'
 import config from 'views/editorConfig.js'
-import { set_localStorage_editContent, get_localStorage_editContent } from 'views/HtmlToWord.js'
-
+import { saveContentToLocal, getContentFromLocal } from 'views/HtmlToWord.js'
+import { UpdateModule } from '@/api'
 export default {
   components: {
     VueUeditorWrap
@@ -88,20 +72,30 @@ export default {
   data () {
     return {
       name: 'Teach_Hard',
-      editContent: get_localStorage_editContent('Teach_Hard'),
-      observerDebounceTime: 5000,
+      Content: getContentFromLocal('Teach_Hard'),
+      observerDebounceTime: 1000,
       exampleDialogVisiable: false,
       config: config
     }
   },
   watch: {
-    editContent (newVal, oldVal) {
-      set_localStorage_editContent(this.name, newVal)
-      this.$message({
-        message: '本地自动保存成功！',
-        iconClass: 'el-icon-success',
-        duration: 2000,
-        customClass: 'message-class'
+    Content (newVal, oldVal) {
+      this.$store.commit('SAVED')
+      saveContentToLocal(this.name, newVal)
+      let id = localStorage.getItem('file_id')
+      UpdateModule({
+        id,
+        module: this.name,
+        value: newVal
+      }).then(() => {
+        setTimeout(() => {
+          this.$store.commit('SAVED')
+        }, 500);
+      }).catch(err => {
+        console.log(err)
+        setTimeout(() => {
+          this.$store.commit('SAVED')
+        }, 500);
       })
     }
   },

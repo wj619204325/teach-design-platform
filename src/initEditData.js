@@ -171,9 +171,9 @@ const json = {
 }
 const init = () => {
     //第一次打开时，localstorage是空白的
-    if (localStorage.getItem('edit_content') === null) {
+    if (localStorage.getItem('content') === null) {
         let value = JSON.stringify(json)
-        localStorage.setItem('edit_content', value)
+        localStorage.setItem('content', value)
     }
     if (localStorage.getItem('Teach_Hard_Env') === null) {
         localStorage.setItem('Teach_Hard_Env', '')
@@ -185,7 +185,7 @@ const init = () => {
 
 const reset = () => {
     let value = JSON.stringify(json)
-    localStorage.setItem('edit_content', value)
+    localStorage.setItem('content', value)
     localStorage.setItem('Teach_Hard_Env', '')
     localStorage.setItem('Teach_Soft_Env', '')
 }

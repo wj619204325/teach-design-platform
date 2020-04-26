@@ -1,11 +1,16 @@
 import axios from 'axios'
 import {
-  Message
+  Message,
+  MessageBox
 } from 'element-ui'
+import router from '@/router'
+import store from '@/store'
 const request = axios.create({
   baseURL: 'http://localhost:3000',
   timeout: 10 * 1000,
-  headers: {}
+  headers: {},
+  //没有设置withCredentials 浏览器不会保存服务器传过来的cookie
+  withCredentials: true
 })
 // 添加请求拦截器
 request.interceptors.request.use(function (config) {
@@ -20,28 +25,49 @@ request.interceptors.request.use(function (config) {
 request.interceptors.response.use((res) => {
     const data = res.data
     // 对响应数据做点什么
-    if (res.status === 200) {
-      //code:0，则返回data
-      if (data.code === 0) {
-        Message({
-          type: 'success',
-          message: data.msg,
-          duration: 2 * 1000
+    switch (res.status) {
+      case 200:
+        //code:0，则返回data
+        if (data.code === 0) {
+          if (data.msg) {
+            Message({
+              type: 'success',
+              message: data.msg,
+              duration: 2 * 1000
+            })
+          }
+          return Promise.resolve(data.data)
+        }
+        //code:-1，则返回后端返回的报错信息msg
+        else {
+          Message({
+            type: 'error',
+            message: data.msg,
+            duration: 3 * 1000,
+            showClose: true
+          })
+          return Promise.reject(data.msg)
+        }
+        break;
+      case 401:
+        // 返回 401 (未授权) 清除 session 并跳转到登录页面
+        MessageBox.alert('您未登录或登录已超时，请重新登录。', '提示', {
+          confirmButtonText: '确定',
+          showClose: false,
+          callback: action => {
+            store.commit('LOGOUT')
+            router.replace({
+              path: '/login',
+              query: {
+                redirect: router.currentRoute.fullPath
+              }
+            })
+          }
         })
-        return Promise.resolve(data.data)
-      }
-      //code:-1，则返回后端返回的报错信息msg
-      else {
-        Message({
-          type: 'error',
-          message: data.msg,
-          duration: 3 * 1000,
-          showClose: true
-        })
-        return Promise.reject(data.msg)
-      }
-    } else {
-      console.log(`error!`)
+        break;
+      default:
+        console.log('服务器出错，请稍后重试！')
+        alert('服务器出错，请联系管理员！')
     }
   },
   (err) => {

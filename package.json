@@ -1,12 +1,17 @@
 {
   "name": "teach-aid-platform",
   "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BNK-ALONG/teach-design-platform.git"
+  },
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "build:analyzer": "cross-env use_analyzer=true npm run build"
+    "build:analyzer": "cross-env use_analyzer=true npm run build",
+    "build:pro": "pm2 deploy ecosystem.config.js production"
   },
   "dependencies": {
     "axios": "^0.19.2",

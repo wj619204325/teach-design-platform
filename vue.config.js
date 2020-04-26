@@ -5,22 +5,29 @@ const resolve = (dir) => {
 }
 const CompressionPlugin = require('compression-webpack-plugin')
 const ParalleeUglifyPlugin = require('webpack-parallel-uglify-plugin')
+const isProduction = process.env.NODE_ENV === 'production'
+const CDN = {
+  js: [
+    'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js',
+    'https://cdn.bootcss.com/element-ui/2.13.0/index.js',
+    'https://cdn.jsdelivr.net/npm/vue-router@3.1.6/dist/vue-router.min.js',
+    'https://cdn.jsdelivr.net/npm/vuex@3.1.2'
+  ],
+  css: [
+    'https://cdn.bootcss.com/element-ui/2.13.0/theme-chalk/index.css'
+  ]
+}
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/teach-design-platform/' : '/',
+  publicPath: isProduction ? '/teach-design-platform/' : '/',
   lintOnSave: false,
-
-  configureWebpack: {
-    externals: {
-      /**
-       * 这里采用Object的形式
-       * 更多的形式参考(https://webpack.js.org/configuration/externals/#src/components/Sidebar/Sidebar.jsx)
-       * key: 指的是在import xxx from 'xxx'中 from后面的'xxx'
-       * value: 指的是模块对外暴露的变量名，一般是固定的
-       */
-      'vue': 'Vue',
-      'vue-router': 'VueRouter',
-      'vuex': 'Vuex',
-      'element-ui': 'ELEMENT'
+  configureWebpack: config => {
+    if (isProduction) {
+      config.externals = {
+        'vue': 'Vue',
+        'vue-router': 'VueRouter',
+        'vuex': 'Vuex',
+        'element-ui': 'ELEMENT'
+      }
     }
   },
 
@@ -29,7 +36,13 @@ module.exports = {
       .set('@', resolve('src'))
       .set('components', resolve('src/components'))
       .set('views', resolve('src/views'))
-    if (process.env.NODE_ENV === 'production') {
+    if (isProduction) {
+      config
+        .plugin('html')
+        .tap(args => {
+          args[0].cdn = CDN;
+          return args;
+        })
       config
         .plugin('compressionPlugin')
         .use(CompressionPlugin, [{
@@ -73,7 +86,13 @@ module.exports = {
 
   devServer: {
     hot: true,
-    compress: true
+    compress: true,
+    proxy: {
+      '/': {
+        target: 'http://localhost:3000',
+        changeOrigin: true
+      }
+    }
   },
   productionSourceMap: false,
 }

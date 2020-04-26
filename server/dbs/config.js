@@ -1,7 +1,11 @@
 //mongodb的配置文件
+//mongodb://用户名:密码@服务器主机地址:mongodb运行端口/要连接的数据库名称
+const DBS = process.env.NODE_ENV === 'production' ?
+  'mongodb://user:user@127.0.0.1:27017/teach_design_platform' :
+  'mongodb://127.0.0.1:27017/dbs'
 export default {
   //dbs是数据库名称
-  dbs: 'mongodb://127.0.0.1:27017/dbs',
+  dbs: DBS,
   redis: {
     get host() {
       return '127.0.0.1'

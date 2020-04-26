@@ -13,6 +13,8 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  MyFiles: [String],
+  CollectFiles: [String],
 })
 export default mongoose.model('user', UserSchema)

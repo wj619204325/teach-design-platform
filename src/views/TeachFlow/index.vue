@@ -29,6 +29,10 @@
   }
   .drag-box {
     border-left: 1px solid #c2c5cb;
+    background-color: #e4e4e4;
+    .el-divider__text {
+      background-color: transparent;
+    }
     .drag-box-checked {
       padding: 0 25px;
       border-bottom: 1px solid #c2c5cb;
@@ -92,14 +96,14 @@
 
           <el-button type="primary"
                      size="medium"
-                     @click="isDemand=!isDemand">{{isDemand?'范例':'返回'}}</el-button>
+                     @click="isDemand=!isDemand">{{isDemand?'范 例':'返回'}}</el-button>
         </div>
       </div>
       <div class="bottom-half">
         <!-- 教师编辑区 -->
         <div class="editor-container">
 
-          <vue-ueditor-wrap v-model="editContent"
+          <vue-ueditor-wrap v-model="Content"
                             mode="observer"
                             :observerDebounceTime="observerDebounceTime"
                             :config="config"></vue-ueditor-wrap>
@@ -173,13 +177,20 @@ import TAG_DATA from './data'
 import draggable from 'vuedraggable'
 import VueUeditorWrap from 'vue-ueditor-wrap'
 import config from 'views/editorConfig.js'
-import { initEditContent, create_flow_table, set_localStorage_editContent,get_localStorage_editContent } from 'views/HtmlToWord.js'
-
+import { create_flow_table, saveContentToLocal, getContentFromLocal } from 'views/HtmlToWord.js'
+import { UpdateModule } from '@/api'
 export default {
   components: {
     draggable, VueUeditorWrap
   },
   data () {
+    // let checkedVal = localStorage.getItem('checkedFlowList')
+    // let checkedFlowList = []
+    // if (checkedVal) {
+    //   checkedFlowList = checkedVal.split(',').map(id => {
+    //     return TAG_DATA.PBL.find(item => item.id === id)
+    //   })
+    // }
     return {
       // 已选：只能进，内部可以拖
       checkedDragOptions: {
@@ -215,8 +226,8 @@ export default {
       curTitle: '',
       exampleDialogVisiable: false,
       name: 'Teach_Flow',
-      observerDebounceTime: 5000,
-      editContent: get_localStorage_editContent('Teach_Flow'),
+      observerDebounceTime: 1000,
+      Content: getContentFromLocal('Teach_Flow'),
       config: config
     }
   },
@@ -224,20 +235,32 @@ export default {
     //数组的顺序、长度发生改变也可以监听到
     'checkedList': {
       handler: function (newVal, oldVal) {
-        this.editContent = create_flow_table(newVal)
+        // let ids = newVal.map(item => item.id).toString()
+        // localStorage.setItem('checkedFlowList', ids)
+        this.Content = create_flow_table(newVal)
       },
       deep: true
     },
     clickCheckedTagIndex (newVal) {
       if (newVal > -1) this.clickOptionTagIndex = -1
     },
-    editContent (newVal, oldVal) {
-      set_localStorage_editContent(this.name, newVal)
-      this.$message({
-        message: '本地自动保存成功！',
-        iconClass: 'el-icon-success',
-        duration: 2000,
-        customClass: 'message-class'
+    Content (newVal, oldVal) {
+      this.$store.commit('SAVED')
+      saveContentToLocal(this.name, newVal)
+      let id = localStorage.getItem('file_id')
+      UpdateModule({
+        id,
+        module: this.name,
+        value: newVal
+      }).then(() => {
+        setTimeout(() => {
+          this.$store.commit('SAVED')
+          console.log('保存成功')
+        }, 500);
+      }).catch(err => {
+        setTimeout(() => {
+          this.$store.commit('SAVED')
+        }, 500);
       })
     }
   },

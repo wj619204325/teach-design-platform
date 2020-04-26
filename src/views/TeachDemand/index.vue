@@ -11,17 +11,10 @@
     overflow: hidden;
   }
   .top-half {
-    // border-bottom: 1px solid #c2c5cb;
+    border-bottom: 1px solid #c2c5cb;
     .example-content {
-      padding-top: 20px;
       width: 40%;
-      height: 100%;
-      margin: 0 auto;
-      margin-bottom: 10px;
-      position: relative;
-      .el-button {
-        float: right;
-      }
+      margin: 20px auto;
     }
   }
   .bottom-half {
@@ -53,6 +46,7 @@
 .demand-tag-aside {
   border-left: 1px solid #c2c5cb;
   padding: 20px 20px 0 20px;
+  background-color: #e4e4e4;
   .el-tag {
     width: 160px;
     margin: 10px auto;
@@ -93,7 +87,7 @@
                             :enterable="false"
                             :content="scope.row.value">
                   <div slot="content">{{scope.row.name}}含义：<br />{{scope.row.value}}</div>
-                  <div>{{scope.row.name}}</div>
+                  <div><strong><i>{{scope.row.name}}</i></strong></div>
                 </el-tooltip>
               </template>
             </el-table-column>
@@ -115,22 +109,25 @@
             </template>
 
           </el-table>
+          <i>提示：点击动词查看具体范例</i>
         </div>
-        <!-- 范例 -->
+        <!-- 范  例 -->
         <div class="example-content"
              v-else>
           <p>{{`${wordName}范例：`}}</p>
           <p>{{wordValue}}</p>
-          <el-button type="primary"
-                     @click="showTable=true">返回</el-button>
-          <div style="clear:both;"></div>
+          <div style="overflow:hidden;">
+            <el-button type="primary"
+                       style="float:right;position:static;"
+                       @click="showTable=true">返回</el-button>
+          </div>
         </div>
       </div>
       <!-- 编辑区 -->
       <div class="bottom-half">
         <!-- 教师编辑区 -->
         <div class="editor-container">
-          <vue-ueditor-wrap v-model="editContent"
+          <vue-ueditor-wrap v-model="Content"
                             mode="observer"
                             :observerDebounceTime="observerDebounceTime"
                             :config="config"></vue-ueditor-wrap>
@@ -153,7 +150,8 @@
 import VueUeditorWrap from 'vue-ueditor-wrap'
 import config from 'views/editorConfig.js'
 import TABLE_DATA from './data'
-import { set_localStorage_editContent, get_localStorage_editContent } from 'views/HtmlToWord.js'
+import { UpdateModule } from '@/api'
+import { saveContentToLocal, getContentFromLocal } from 'views/HtmlToWord.js'
 
 export default {
   components: {
@@ -162,8 +160,8 @@ export default {
   data () {
     return {
       name: 'Teach_Demand',
-      editContent: get_localStorage_editContent('Teach_Demand'),
-      observerDebounceTime: 5000,
+      Content: getContentFromLocal('Teach_Demand'),
+      observerDebounceTime: 1000,
       exampleDialogVisiable: false,
       tableData: TABLE_DATA,
       showTable: true,
@@ -206,13 +204,22 @@ export default {
     }
   },
   watch: {
-    editContent (newVal, oldVal) {
-      set_localStorage_editContent(this.name, newVal)
-      this.$message({
-        message: '本地自动保存成功！',
-        iconClass: 'el-icon-success',
-        duration: 2000,
-        customClass: 'message-class'
+    Content (newVal, oldVal) {
+      this.$store.commit('SAVED')
+      saveContentToLocal(this.name, newVal)
+      let id = localStorage.getItem('file_id')
+      UpdateModule({
+        id,
+        module: this.name,
+        value: newVal
+      }).then(() => {
+        setTimeout(() => {
+          this.$store.commit('SAVED')
+        }, 500);
+      }).catch(err => {
+        setTimeout(() => {
+          this.$store.commit('SAVED')
+        }, 500);
       })
     }
   },

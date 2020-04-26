@@ -1,3 +1,16 @@
+<style lang="scss">
+.tool-left {
+  position: relative;
+  .fileType-text {
+    position: absolute;
+    color: #606266;
+    font: 12px Arial;
+    bottom: 0;
+    right: 10px;
+  }
+}
+</style>
+
 <template>
   <el-container>
     <!-- 菜单栏 -->
@@ -11,7 +24,7 @@
              class="el-input__icon el-icon-search"></i>
         </el-input>
       </div>
-      <el-menu default-active="/CourseBrief"
+      <el-menu :default-active="activeName"
                class="menu"
                router
                background-color="#E4E4E4">
@@ -64,13 +77,17 @@
       <el-container>
         <el-header height="auto"
                    class="tabsNav">
-          <el-tabs v-model="activeName"
-                   type="card"
-                   closable>
+          <el-tabs value="first"
+                   type="card">
             <el-tab-pane name="first">
-              <span slot="label"><i class="el-icon-s-promotion"></i> 我的模型一</span></el-tab-pane>
+              <span slot="label"><i class="el-icon-s-promotion"></i> {{fileName}}</span>
+            </el-tab-pane>
           </el-tabs>
           <div class="tool-left">
+            <el-button icon="el-icon-success"
+                       :loading="!isSaved"
+                       round
+                       size="small">{{isSaved?`已保存`:`保存中...`}}</el-button>
             <el-button icon="el-icon-video-play"
                        @click="exportWord"
                        round
@@ -80,8 +97,19 @@
             <el-button icon="el-icon-refresh"
                        @click="reset"
                        round
-                       size="small">重置</el-button>
+                       size="small">全部清空</el-button>
+            <el-button icon="el-icon-folder-add"
+                       @click="changeType"
+                       round
+                       :loading="changeTypeLoading"
+                       size="small">
+              {{`另存为${fileType==='template'?'教案':'模板'}`}}
+            </el-button>
+            <span class="fileType-text">
+              {{`当前文件类型：${fileType==='template'?'模板':'教案'}`}}
+            </span>
           </div>
+
         </el-header>
         <el-main>
           <router-view></router-view>
@@ -91,65 +119,62 @@
   </el-container>
 </template>
 <script>
-import { html_to_word } from 'views/HtmlToWord'
+import { download_word, init_file } from '@/utils/index'
+import { ChangeFileType } from '@/api'
 export default {
   name: 'Layout',
   data () {
     return {
+      fileName: localStorage.getItem('file_name'),
+      fileType: localStorage.getItem('file_type'),
       filterText: '',
-      activeName: 'first',
+      activeName: '',
       isExportDisable: false,
       exportLoading: false,
+      changeTypeLoading: false
     }
   },
   watch: {
     filterText (val) {
+    },
+
+  },
+  computed: {
+    isSaved () {
+      return this.$store.state.isSaved
     }
   },
   methods: {
     exportWord: function () {
-      this.exportLoading = true
-      let content = localStorage.getItem('edit_content')
-      let json = JSON.parse(content)
-      let Teach_Hard_Env = localStorage.getItem('Teach_Hard_Env')
-      let Teach_Soft_Env = localStorage.getItem('Teach_Soft_Env')
-      if (Teach_Hard_Env) {
-        let value = '硬件环境：' + Teach_Hard_Env
-        json['Teach_Env'] = json['Teach_Env'].replace('硬件环境：', value)
-      }
-      if (Teach_Soft_Env) {
-        let value = '软件环境：' + Teach_Soft_Env
-        json['Teach_Env'] = json['Teach_Env'].replace('软件环境：', value)
-      }
-      console.log('json:', json['Teach_Env'])
-      let modes = [
-        'Course_Brief',
-        'Academic_Analysis',
-        'Teach_Demand',
-        'Teach_Hard',
-        'Teach_Env',
-        'Teach_Flow'
-      ]
-      let html = ''
-      for (let item of modes) {
-        html += json[item]
-      }
-      html_to_word(html)
-
-      setTimeout(() => {
-        this.exportLoading = false
-      }, 1000)
+      let fileName = localStorage.getItem('file_name')
+      let content = localStorage.getItem('content')
+      let hardEnv = localStorage.getItem('Teach_Hard_Env')
+      let softEnv = localStorage.getItem('Teach_Soft_Env')
+      download_word(content, fileName, hardEnv, softEnv)
     },
     reset: function () {
-      this.$confirm('重置之后，将无法保留所有编辑，确定重置？', '提示')
+      this.$confirm('全部清空之后，将无法保留所有编辑，确定清空？', '提示')
         .then(() => {
-          import('@/initEditData').then(module => {
-            module.default.reset()
-            window.location.reload()
-          })
+          init_file()
+          window.location.reload()
         })
     },
-
+    changeType: function () {
+      this.changeTypeLoading = true
+      let id = localStorage.getItem('file_id'),
+        type = this.fileType
+      ChangeFileType({ id, type })
+        .then(() => {
+          this.changeTypeLoading = false
+        })
+        .catch(err => {
+          console.log(err)
+          this.changeTypeLoading = false
+        })
+    }
   },
+  mounted () {
+    this.activeName = this.$route.path
+  }
 }
 </script>

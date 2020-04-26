@@ -53,9 +53,8 @@
 </template>
 
 <script>
-import { Login } from '@/api'
 const CryptoJS = require('crypto-js')
-
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   data () {
@@ -75,19 +74,18 @@ export default {
   watch: {
   },
   methods: {
+    ...mapActions(['LogIn']),
     handleLogin () {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          Login({
+          this.LogIn({
             username: this.loginForm.username,
             password: CryptoJS.MD5(this.loginForm.password).toString()
           })
             .then(data => {
-              let username = data.username
-              localStorage.setItem('username', username)
               this.$router.push({
-                name: 'home'
+                name: 'MyTeachFile'
               })
               this.loginErrMsg = ''
               this.loading = false

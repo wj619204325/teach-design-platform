@@ -36,9 +36,26 @@ export const Logout = () => {
     url: '/users/logout'
   })
 }
+// 获取用户的文件列表
+export const GetFileList = (username) => {
+  return request({
+    url: '/file/getFileList',
+    params: {
+      username
+    }
+  })
+}
+// 新建一个教案
+export const CreateOneFile = (data) => {
+  return request({
+    url: '/file/addFile',
+    method: 'post',
+    data: data
+  })
+}
 
-//获取文件信息
-export const GetFile = (id) => {
+// 获取某一教案
+export const GetOneFile = (id) => {
   return request({
     url: '/file/getFile',
     params: {
@@ -46,6 +63,29 @@ export const GetFile = (id) => {
     }
   })
 }
+//修改某一模块
+export const UpdateModule = (data) => {
+  return request({
+    url: '/file/updateFile',
+    method: 'post',
+    data: data
+  })
+}
+
+//另存为模板/教案
+export const ChangeFileType = ({
+  id,
+  type
+}) => {
+  return request({
+    url: '/file/changeType',
+    params: {
+      id,
+      type
+    }
+  })
+}
+
 //重命名文件名
 export const RenameFile = (data) => {
   return request({
@@ -55,15 +95,6 @@ export const RenameFile = (data) => {
   })
 }
 
-//下载文件
-export const DownloadFile = (id) => {
-  return request({
-    url: '/file/download',
-    params: {
-      id
-    }
-  })
-}
 //分享文件
 export const ShareFile = (data) => {
   return request({

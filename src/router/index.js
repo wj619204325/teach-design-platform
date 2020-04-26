@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from 'views/layout.vue'
+import store from '../store'
+import {
+  MessageBox
+} from 'element-ui'
 Vue.use(VueRouter)
 
 const routes = [{
@@ -9,7 +13,7 @@ const routes = [{
     meta: {
       title: '首页'
     },
-    redirect: '/login',
+    redirect: '/MyTeachFile',
     component: Layout,
     children: [{
         path: '/MyTeachFile',
@@ -99,13 +103,58 @@ const routes = [{
       title: '注册'
     },
     component: resolve => require(['views/Login/register'], resolve)
-
   },
-
+  {
+    path: '*',
+    name: 'page404',
+    meta: {
+      title: '404'
+    },
+    component: resolve => require(['views/404.vue'], resolve)
+  },
 ]
 
 const router = new VueRouter({
   routes
+})
+const whiteList = ['/login', '/register', '/404']
+router.beforeEach((to, from, next) => {
+  const session = store.state.session
+  if (session) {
+    if (to.path === '/login') {
+      next({
+        path: '/MyTeachFile'
+      })
+    } else if (to.path.includes('/design')) {
+      let file_id = localStorage.getItem('file_id')
+      if (!file_id) {
+        MessageBox.alert('您还没有新建个一个教案快去新建一个吧', '提示', {
+          confirmButtonText: '好的',
+          showClose: false,
+          callback: action => {
+            next({
+              path: '/MyTeachFile'
+            })
+          }
+        })
+      } else {
+        next()
+      }
+    } else {
+      next()
+    }
+  } else {
+    if (whiteList.indexOf(to.path) !== -1) {
+      next()
+    } else {
+      next({
+        path: '/login',
+        query: {
+          redirect: to.fullPath //同时记录下当前页面路由方便下次直接跳转。
+        }
+      }) // 否则全部重定向到登录页
+    }
+  }
 })
 
 export default router
