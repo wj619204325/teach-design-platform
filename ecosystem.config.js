@@ -2,7 +2,7 @@ module.exports = {
   apps: [ // First application
     {
       name: 'teach-design-platform',
-      script: './server/bin/www',
+      script: './server/dist/app.js',
       env: {
         COMMON_VARIABLE: 'true'
       },
