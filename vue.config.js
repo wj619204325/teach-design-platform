@@ -18,7 +18,7 @@ const CDN = {
   ]
 }
 module.exports = {
-  publicPath: isProduction ? '/teach-design-platform/' : '/',
+  publicPath: isProduction ? '/' : '/',
   lintOnSave: false,
   configureWebpack: config => {
     if (isProduction) {
