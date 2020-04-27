@@ -1,1 +1,1 @@
-npm install && npm run build && rm -rf ./server/public && mkdir ./server/public && mv ./dist/* ./server/public && rm -rf ./dist && cd ./server && npm install
+npm install && cd ./server && npm install && rm -rf ./public && cd .. && npm run build && mkdir ./server/public && mv ./dist/* ./server/public && rm -rf ./dist
