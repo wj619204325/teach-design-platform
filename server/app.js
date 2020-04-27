@@ -105,5 +105,5 @@ app.use(file.routes(), file.allowedMethods())
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
-
+app.listen(8000)
 module.exports = app
