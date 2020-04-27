@@ -79,7 +79,7 @@ mongoose.connect(dbConfig.dbs, {
   useUnifiedTopology: true
 })
 // routes
-const allowPath = ['/users/signup', '/users/signin']
+const allowPath = ['/users/signup', '/users/signin', '/users/verify']
 // 请求拦截
 function Interceptor(ctx, next) {
   let url = ctx.request.url
