@@ -3,7 +3,7 @@
 const DBS = process.env.NODE_ENV === 'production' ?
   'mongodb://user:user@127.0.0.1:27017/teach_design_platform' :
   'mongodb://127.0.0.1:27017/dbs'
-export default {
+module.exports = {
   //dbs是数据库名称
   dbs: DBS,
   redis: {

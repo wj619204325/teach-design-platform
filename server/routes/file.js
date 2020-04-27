@@ -1,6 +1,6 @@
-import Router from 'koa-router'
-import FileModel from '../dbs/models/file'
-import UserModel from '../dbs/models/users'
+const Router = require('koa-router')
+const FileModel = require('../dbs/models/file')
+const UserModel = require('../dbs/models/users')
 const router = new Router({
   prefix: '/file'
 })
@@ -234,4 +234,4 @@ router.post('/renameFile', async (ctx) => {
     msg: '重命名成功！'
   }
 })
-export default router
+module.exports = router

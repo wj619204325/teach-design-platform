@@ -2,7 +2,11 @@ module.exports = {
   apps: [ // First application
     {
       name: 'teach-design-platform',
-      script: './server/dist/app.js',
+      script: './server/bin/www',
+      watch: true,
+      log_date_format: "YYYY-MM-DD HH:mm:ss",
+      out_file: "./logs/out-0.log",
+      error_file: "./logs/err-0.log",
       env: {
         COMMON_VARIABLE: 'true'
       },

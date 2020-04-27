@@ -1,17 +1,15 @@
-require('babel-core/register');
-require('babel-polyfill');
-import Koa from 'koa'
-import json from 'koa-json'
-import onerror from 'koa-onerror'
-import bodyparser from 'koa-bodyparser'
-import logger from 'koa-logger'
-import mongoose from 'mongoose'
-import dbConfig from './dbs/config'
-import file from './routes/file'
-import users from './routes/users'
-import session from 'koa-generic-session'
-import passport from './utils/passport'
-import Redis from 'koa-redis'
+const Koa = require('koa')
+const json = require('koa-json')
+const onerror = require('koa-onerror')
+const bodyparser = require('koa-bodyparser')
+const logger = require('koa-logger')
+const mongoose = require('mongoose')
+const dbConfig = require('./dbs/config')
+const file = require('./routes/file')
+const users = require('./routes/users')
+const session = require('koa-generic-session')
+const passport = require('./utils/passport')
+const Redis = require('koa-redis')
 const path = require('path')
 const resolve = (dir) => {
   return path.join(__dirname, dir)

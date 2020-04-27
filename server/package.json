@@ -3,10 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "./node_modules/.bin/nodemon bin/www --exec babel-node",
-    "babelbuild": "babel  --out-dir dist",
-    "start": "node dist/app.js",
-    "prd": "pm2 start bin/www",
+    "dev": "./node_modules/.bin/nodemon bin/www ",
+    "start": "pm2 start bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -23,20 +21,12 @@
     "koa-redis": "^4.0.1",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
-    "koa-views": "^6.2.0",
     "koa2-cors": "^2.0.6",
     "mongoose": "^5.9.7",
     "nodemailer": "^4.6.8",
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
-    "@babel/node": "^7.5.5",
-    "@babel/plugin-transform-runtime": "^7.9.0",
-    "@babel/polyfill": "^7.8.7",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/runtime": "^7.9.2",
     "nodemon": "^1.19.1"
   },
   "optionalDependencies": {

@@ -1,6 +1,6 @@
-import passport from 'koa-passport'
-import LocalStrategy from 'passport-local'
-import UserModel from '../dbs/models/users'
+const passport = require('koa-passport')
+const LocalStrategy = require('passport-local')
+const UserModel = require('../dbs/models/users')
 //用户名密码验证策略
 passport.use(new LocalStrategy({
     usernameField: 'username'
@@ -39,4 +39,4 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user, done) {
   return done(null, user)
 })
-export default passport
+module.exports = passport

@@ -7,5 +7,3 @@ npm install
 cd ..
 mv ./dist/* ./server/public/
 rm -rf ./dist
-cd ./server
-npm run babelbuild

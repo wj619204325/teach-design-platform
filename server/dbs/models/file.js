@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const UserSchema = new Schema({
   name: String,
@@ -13,4 +13,4 @@ const UserSchema = new Schema({
     Teach_Flow: String
   }
 })
-export default mongoose.model('file', UserSchema)
+module.exports = mongoose.model('file', UserSchema)
