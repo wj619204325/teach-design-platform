@@ -1,3 +1,4 @@
+cd ./source
 npm install
 npm run build
 cd ./server
