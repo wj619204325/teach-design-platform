@@ -60,7 +60,7 @@ if (process.env.NODE_ENV !== 'production') {
   const cors = require('koa2-cors')
   app.use(cors({
     origin: (ctx) => {
-      return 'http://localhost:8080'
+      return 'http://39.97.255.236'
     },
     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
     maxAge: 5,
