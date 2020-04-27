@@ -56,20 +56,13 @@ router.post('/addFile', async (ctx) => {
   const {
     name,
     type,
-    username
+    username,
+    content
   } = ctx.request.body
   let newFile = {
-    name: name,
-    type: type,
-    content: {
-      CourseBrief: '',
-      Academic_Analysis: '',
-      Teach_Demand: '',
-      Teach_Hard: '',
-      Teach_Hard_Env: '',
-      Teach_Soft_Env: '',
-      Teach_Flow: ''
-    }
+    name,
+    type,
+    content
   }
   let file_id
   await FileModel.create(newFile)

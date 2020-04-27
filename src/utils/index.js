@@ -46,6 +46,29 @@
  }
 
  export const init_file = () => {
+   const Teach_Env = `
+  <table cellspacing="0" cellpadding="0" width="100%">
+      <tbody>
+          <tr style=";height:42px" class="firstRow">
+              <td width="1034" colspan="6" valign="top" style="border: 1px solid black;  border-image: initial; background: rgb(243, 243, 243); padding: 0px;" height="42">
+                  <p style="margin-top:9px">
+                      <strong><span style="font-size:19px">五、教学环境 </span></strong>
+                  </p>
+              </td>
+          </tr>
+          <tr>
+              <td width="1034" colspan="6" style="border-right: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-image: initial; border-top: none; padding: 0px;">
+                  <p style="margin-top:10px;margin-right:2px;margin-bottom:0;margin-left:7px;margin-bottom:0;text-align:justify;text-justify:inter-ideograph;text-indent:32px" dir="ltr">
+                      硬件环境：
+                  </p>
+                  <p style="margin-top:10px;margin-right:2px;margin-bottom:0;margin-left:7px;margin-bottom:0;text-align:justify;text-justify:inter-ideograph;text-indent:32px">
+                      软件环境：
+                  </p>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+  `
    const Teach_Flow = `
   <table cellspacing="0" cellpadding="0" align="center" width="100%">
       <tbody>
@@ -82,29 +105,32 @@
      Academic_Analysis: '',
      Teach_Demand: '',
      Teach_Hard: '',
-     Teach_Env: '',
-     Teach_Flow: Teach_Flow
+     Teach_Env,
+     Teach_Flow
    }
    localStorage.setItem('Teach_Hard_Env', '')
    localStorage.setItem('Teach_Soft_Env', '')
    localStorage.setItem('content', JSON.stringify(content))
+   content['Teach_Hard_Env'] = ''
+   content['Teach_Soft_Env'] = ''
+   return content
  }
  export const create_new_file = ({
    name,
    type,
-   username
+   username,
+   content
  }) => {
-
    return CreateOneFile({
        name,
        type,
-       username
+       username,
+       content
      })
      .then(data => {
        localStorage.setItem('file_id', data.id)
        localStorage.setItem('file_name', name)
        localStorage.setItem('file_type', type)
-       init_file()
        return Promise.resolve(data.id)
      })
      .catch(err => {

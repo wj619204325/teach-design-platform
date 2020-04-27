@@ -140,8 +140,8 @@ export default {
       let name = this.fileName,
         username = this.username,
         type = this.fileType
-      init_file()
-      create_new_file({ name, type, username }).then((id) => {
+      const content = init_file()
+      create_new_file({ name, type, username, content }).then((id) => {
         this.cancelCreate()
         this.$router.push({
           name: 'CourseBrief',
