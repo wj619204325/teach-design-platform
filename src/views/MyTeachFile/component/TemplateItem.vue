@@ -77,7 +77,7 @@
 <template>
   <div class="template-item">
     <div class="template-item-content">
-      <img src="./filePage.png">
+      <img src="https://internal-api-drive-stream-hl.feishu.cn/space/api/box/stream/download/all/boxcntQQdTShCs3ZTwH01fFmMbf/">
       <div class="hover-btn">
         <!-- <span v-for="(item,index) in btnTitleIcon"
               :title="item.title"
