@@ -6,7 +6,7 @@ import {
 import router from '@/router'
 import store from '@/store'
 const request = axios.create({
-  baseURL: 'http://39.97.255.236:3000',
+  baseURL: 'http://39.97.255.236',
   timeout: 10 * 1000,
   headers: {},
   //没有设置withCredentials 浏览器不会保存服务器传过来的cookie
