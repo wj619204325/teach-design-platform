@@ -36,7 +36,6 @@ export default new Vuex.Store({
     }, data) {
       return Login(data).then(data => {
         commit('LOGIN', data.session)
-        console.log("session:", data.session)
         commit('USERNAME', data.username)
         return Promise.resolve(data)
       })

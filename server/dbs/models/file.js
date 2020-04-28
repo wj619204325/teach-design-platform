@@ -10,6 +10,7 @@ const UserSchema = new Schema({
     Teach_Hard_Env: String,
     Teach_Soft_Env: String,
     Teach_Hard: String,
+    Teach_Evaluate: String,
     Teach_Flow: String
   }
 })

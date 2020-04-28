@@ -5,7 +5,7 @@ import {
 } from 'element-ui'
 import router from '@/router'
 import store from '@/store'
-const baseURL = process.env.NODE_ENV === 'production' ? 'http://39.97.255.236' : 'http:localhost:3000'
+const baseURL = process.env.NODE_ENV === 'production' ? 'http://39.97.255.236' : 'http://localhost:3000'
 const request = axios.create({
   baseURL: baseURL,
   timeout: 10 * 1000,

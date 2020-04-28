@@ -7,7 +7,8 @@
   }
   .top-half {
     border-bottom: 1px solid #c2c5cb;
-    height: 35%;
+    height: 20%;
+    margin-top: 30px;
   }
   .bottom-half {
     height: 65%;

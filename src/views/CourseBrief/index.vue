@@ -4,8 +4,9 @@
   width: 100%;
   .top-half {
     border-bottom: 1px solid #c2c5cb;
-    height: 35%;
+    height: 25%;
     width: 100%;
+    margin-top: 30px;
   }
   .bottom-half {
     width: 100%;

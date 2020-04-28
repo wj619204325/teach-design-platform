@@ -103,3 +103,18 @@ export const ShareFile = (data) => {
     data: data
   })
 }
+// 上传文件
+export const UploadFiles = (fileData) => {
+  return request({
+    url: '/file/upload',
+    method: 'post',
+    data: fileData
+  })
+}
+
+// 获取用户文件列表
+export const GetEvalFileList = () => {
+  return request({
+    url: '/file/getEvalFiles'
+  })
+}

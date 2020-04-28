@@ -2,6 +2,7 @@
 .teach-env-wrap {
   height: 100%;
   width: 100%;
+  background-color: #fff;
   .top-half {
     width: 100%;
     height: 44%;

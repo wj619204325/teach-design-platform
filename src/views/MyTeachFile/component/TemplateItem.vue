@@ -1,7 +1,7 @@
 <style lang="scss">
 .template-item {
   margin: 10px 40px;
-  width: 130px;
+  width: 180px;
   cursor: pointer;
   transition: margin 0.2s;
   position: relative;
@@ -17,7 +17,7 @@
     overflow: hidden;
     background: #fff;
     margin: 0 auto;
-    height: 170px;
+    height: 240px;
     border: 1px solid #dee0e3;
     padding: 11px 11px 10px;
     border-radius: 4px;
@@ -38,10 +38,10 @@
       span {
         width: 100%;
         height: 25%;
-        line-height: 35px;
+        line-height: 58px;
         text-align: center;
         color: #fff;
-        font-size: 22px;
+        font-size: 28px;
         display: inline-block;
         cursor: pointer;
       }
@@ -77,7 +77,7 @@
 <template>
   <div class="template-item">
     <div class="template-item-content">
-      <img src="./filePage.png">
+      <img :src="imgUrl">
       <div class="hover-btn">
         <!-- <span v-for="(item,index) in btnTitleIcon"
               :title="item.title"
@@ -108,11 +108,12 @@
   </div>
 </template>
 <script>
+const IMG = require('@/assets/filePage.png')
 export default {
   name: 'TemplateItem',
   data () {
     return {
-
+      imgUrl: IMG
     }
   },
   props: {

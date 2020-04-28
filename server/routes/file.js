@@ -1,6 +1,7 @@
 const Router = require('koa-router')
 const FileModel = require('../dbs/models/file')
 const UserModel = require('../dbs/models/users')
+const Upload = require('../utils/upload')
 const router = new Router({
   prefix: '/file'
 })
@@ -227,4 +228,49 @@ router.post('/renameFile', async (ctx) => {
     msg: '重命名成功！'
   }
 })
+
+// 文件上传
+router.post('/upload', Upload.array('file'), async (ctx) => {
+  let fileList = ctx.req.files.map(file => {
+    return `${file.filename},${file.originalname}`
+  })
+  const username = ctx.session.passport.user.username
+
+  await UserModel.findOne({
+    username
+  }, (err, doc) => {
+    if (err) {
+      global.console.log("上传文件绑定用户失败，error:", err)
+    }
+    let EvalFiles = doc.EvaluateFiles
+    if (EvalFiles) {
+      doc.EvaluateFiles = EvalFiles.concat(fileList)
+    } else {
+      doc.EvaluateFiles = []
+    }
+    doc.save()
+  })
+  ctx.body = {
+    code: 0,
+    msg: '保存成功！'
+  }
+})
+
+// 获取用户的教学评价文件列表
+router.get('/getEvalFiles', async (ctx) => {
+  let EvaluateFiles = ctx.session.passport.user.EvaluateFiles || []
+  let list = EvaluateFiles.map(path => {
+    let file = path.split(',')
+    return {
+      url: file[0],
+      name: file[1]
+    }
+  })
+  ctx.body = {
+    code: 0,
+    msg: '',
+    data: list
+  }
+})
+
 module.exports = router

@@ -157,20 +157,21 @@ $cursor: #fff;
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #eee;
+$imgUrl: url("../.././assets/login.png");
 
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  background: center / 100% 100% no-repeat $imgUrl;
   overflow: hidden;
-
+  position: relative;
   .login-form {
-    position: relative;
-    width: 520px;
+    position: absolute;
+    width: 450px;
     max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
     overflow: hidden;
+    right: 10%;
+    top: 25%;
   }
 
   .tips {

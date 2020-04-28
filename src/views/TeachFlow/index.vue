@@ -29,9 +29,9 @@
   }
   .drag-box {
     border-left: 1px solid #c2c5cb;
-    background-color: #e4e4e4;
+    background-color: #ffffff;
     .el-divider__text {
-      background-color: transparent;
+      // background-color: transparent;
     }
     .drag-box-checked {
       padding: 0 25px;

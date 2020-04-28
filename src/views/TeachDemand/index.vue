@@ -46,7 +46,7 @@
 .demand-tag-aside {
   border-left: 1px solid #c2c5cb;
   padding: 20px 20px 0 20px;
-  background-color: #e4e4e4;
+  background-color: #ffffff;
   .el-tag {
     width: 160px;
     margin: 10px auto;

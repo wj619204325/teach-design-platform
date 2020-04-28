@@ -111,7 +111,7 @@
           </div>
 
         </el-header>
-        <el-main>
+        <el-main style="background-color:#f4f4f4;">
           <router-view></router-view>
         </el-main>
       </el-container>
