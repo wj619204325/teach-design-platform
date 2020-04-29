@@ -16,6 +16,23 @@
       width: 40%;
       margin: 20px auto;
     }
+    .el-collapse {
+      width: 80%;
+      margin: 0 auto;
+      .el-collapse-item__wrap {
+        background-color: transparent;
+        p {
+          margin: 5px;
+        }
+      }
+      .el-collapse-item__header {
+        background-color: transparent;
+        font-size: 16px;
+        &.is-active {
+          color: #409eff;
+        }
+      }
+    }
   }
   .bottom-half {
     padding-top: 20px;
@@ -65,10 +82,11 @@
     <!-- 中间部分 -->
     <el-main>
       <!-- 范例区 -->
-      <div class="top-half">
+      <div class="top-half"
+           v-show="clickDemandTagIndex==0">
         <!-- 表格 -->
         <div class="table-wrap"
-             v-if="showTable">
+             v-show="showTable">
           <p>布鲁姆将教学目标按照由低到高分为<strong><i>记忆、理解、运用、分析、评价、创造</i></strong>六个维度，每个教学目标维度可以用一系列的动词进行描述，具体如下表所示。</p>
 
           <el-table :data="tableData"
@@ -113,7 +131,7 @@
         </div>
         <!-- 范  例 -->
         <div class="example-content"
-             v-else>
+             v-show="!showTable">
           <p>{{`${wordName}范例：`}}</p>
           <p>{{wordValue}}</p>
           <div style="overflow:hidden;">
@@ -122,6 +140,23 @@
                        @click="showTable=true">返回</el-button>
           </div>
         </div>
+      </div>
+      <div class="top-half"
+           v-show="clickDemandTagIndex==1">
+        <el-collapse value="言语信息"
+                     accordion>
+          <p style="text-indent:2em;margin:0;">加涅将教学可能产生的结果即学生的学习结果或教学目标分为五类：言语信息、智力技能、认知策略、动作技能和态度。</p>
+          <el-collapse-item v-for="gagne in GagneData"
+                            :key="gagne.id"
+                            :title="gagne.title"
+                            :name="gagne.title">
+            <template slot="title">
+              <i class="el-icon-info"></i> --{{gagne.title}}
+            </template>
+            <p style="text-indent:2em;"><strong>含 义：</strong>{{gagne.desc}}</p>
+            <p style="text-indent:2em;"><strong>范 例：</strong>{{gagne.example}}</p>
+          </el-collapse-item>
+        </el-collapse>
       </div>
       <!-- 编辑区 -->
       <div class="bottom-half">
@@ -149,7 +184,7 @@
 <script>
 import VueUeditorWrap from 'vue-ueditor-wrap'
 import config from 'views/editorConfig.js'
-import TABLE_DATA from './data'
+import DEMAND_DATA from './data'
 import { UpdateModule } from '@/api'
 import { saveContentToLocal, getContentFromLocal } from 'views/HtmlToWord.js'
 
@@ -163,12 +198,13 @@ export default {
       Content: getContentFromLocal('Teach_Demand'),
       observerDebounceTime: 1000,
       exampleDialogVisiable: false,
-      tableData: TABLE_DATA,
+      tableData: DEMAND_DATA.BroomeDemand,
+      GagneData: DEMAND_DATA.GagneDemand,
       showTable: true,
       wordName: '',
       wordValue: '',
       clickDemandTagIndex: 0,
-      demandList: ['布鲁姆教学目标', '布鲁姆教学目标', '布鲁姆教学目标', '布鲁姆教学目标'],
+      demandList: ['布鲁姆教学目标', '加涅教学目标'],
       config: config
     }
   },
