@@ -54,14 +54,17 @@
                @tab-click="handleClick">
         <el-tab-pane label="我的教案"
                      name="design">
-          <div class="template-item-wrap"
-               @click="handleCommand(designFileList,$event)">
-            <template-item v-for="(file,index) in designFileList"
-                           :key="file.id"
-                           :index="index"
-                           :fileId="file.id"
-                           :fileName="file.name"></template-item>
-          </div>
+          <keep-alive>
+            <div class="template-item-wrap"
+                 @click="handleCommand(designFileList,$event)">
+              <template-item v-for="(file,index) in designFileList"
+                             :key="file.id"
+                             :index="index"
+                             :imgUrl="IMG_DATA[index%4]"
+                             :fileId="file.id"
+                             :fileName="file.name"></template-item>
+            </div>
+          </keep-alive>
           <el-card shadow="always"
                    class="create-tip"
                    v-if="designFileList.length===0">
@@ -103,6 +106,7 @@
             <template-item v-for="(file,index) in templateFileList"
                            :key="file.id"
                            :fileId="file.id"
+                           :imgUrl="IMG_DATA[index%4]"
                            :index="index"
                            :fileName="file.name"></template-item>
           </div>
@@ -147,6 +151,7 @@
             <template-item v-for="(file,index) in collectFileList"
                            :key="file.id"
                            :index="index"
+                           :imgUrl="IMG_DATA[index%4]"
                            :fileId="file.id"
                            :fileName="file.name"></template-item>
           </div>
@@ -227,6 +232,10 @@ import TemplateItem from './component/TemplateItem.vue'
 import { RenameFile, GetOneFile, ShareFile, GetFileList } from '@/api'
 import { download_word, create_new_file, init_file } from '@/utils/index'
 import { mapMutations } from 'vuex'
+const IMG_1 = require('@/assets/blue.png')
+const IMG_2 = require('@/assets/green.png')
+const IMG_3 = require('@/assets/orange.png')
+const IMG_4 = require('@/assets/purple.png')
 export default {
   components: {
     TemplateItem
@@ -246,6 +255,7 @@ export default {
       curIndex: '',
       fileName: '',
       fileType: '',
+      IMG_DATA: [IMG_1, IMG_2, IMG_3, IMG_4],
       createNewFileDialog: false
     };
   },

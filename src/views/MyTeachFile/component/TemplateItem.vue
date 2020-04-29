@@ -23,7 +23,6 @@
     border-radius: 4px;
     -webkit-box-shadow: 0 6px 12px 0 rgba(31, 35, 41, 0.04);
     box-shadow: 0 6px 12px 0 rgba(31, 35, 41, 0.04);
-    --top-border-bg-color: #14c0ff;
     .hover-btn {
       width: 100%;
       height: 100%;
@@ -76,13 +75,10 @@
 </style>
 <template>
   <div class="template-item">
-    <div class="template-item-content">
+    <div class="template-item-content"
+         :style="{'--top-border-bg-color':imgColor[index%4]}">
       <img :src="imgUrl">
       <div class="hover-btn">
-        <!-- <span v-for="(item,index) in btnTitleIcon"
-              :title="item.title"
-              :data-id="fileId"
-              :class="item.icon"></span> -->
         <span title="打开"
               :data-id="fileId"
               :data-index="index"
@@ -108,12 +104,11 @@
   </div>
 </template>
 <script>
-const IMG = require('@/assets/filePage.png')
 export default {
   name: 'TemplateItem',
   data () {
     return {
-      imgUrl: IMG
+      imgColor: ['#14c0ff', '#51e46a', '#ffb726', '#ae5da1']
     }
   },
   props: {
@@ -127,6 +122,10 @@ export default {
     },
     index: {
       type: Number,
+      required: true
+    },
+    imgUrl: {
+      type: String,
       required: true
     },
     btnTitleIcon: {
