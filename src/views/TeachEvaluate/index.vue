@@ -202,7 +202,11 @@ export default {
       this.$refs.upload.submit();
       this.uploadLogo = "1";
       let that = this
-      UploadFiles(that.fileData)
+      let id = localStorage.getItem("file_id")
+      UploadFiles({
+        fileData: that.fileData,
+        id
+      })
         .then(() => {
           this.uploadLogo = '2'
         })
@@ -225,7 +229,8 @@ export default {
     handleSucces: function (response, file, fileList) {
     },
     handleOpenDrawer: function () {
-      GetEvalFileList().then(data => {
+      let id = localStorage.getItem("file_id")
+      GetEvalFileList(id).then(data => {
         console.log("file-data:", data)
         this.fileList = data
       })

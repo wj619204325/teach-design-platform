@@ -100,7 +100,7 @@
 <script>
 import { CreateOneFile } from '@/api'
 import { create_new_file, init_file } from '@/utils/index'
-import { mapActions } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 export default {
   data () {
     let login_name = localStorage.getItem('username')
@@ -125,6 +125,10 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'FILENAME',
+      'FILETYPE'
+    ]),
     ...mapActions(['LogOut']),
     logout: function () {
       this.LogOut().then(() => {
@@ -142,6 +146,8 @@ export default {
         type = this.fileType
       const content = init_file()
       create_new_file({ name, type, username, content }).then((id) => {
+        this.FILENAME(name)
+        this.FILETYPE(type)
         this.cancelCreate()
         this.$router.push({
           name: 'CourseBrief',

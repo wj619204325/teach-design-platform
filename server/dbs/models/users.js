@@ -15,7 +15,6 @@ const UserSchema = new Schema({
     required: true
   },
   MyFiles: [String],
-  CollectFiles: [String],
-  EvaluateFiles: [String]
+  CollectFiles: [String]
 })
 module.exports = mongoose.model('user', UserSchema)

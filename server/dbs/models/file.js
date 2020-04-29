@@ -12,6 +12,7 @@ const UserSchema = new Schema({
     Teach_Hard: String,
     Teach_Evaluate: String,
     Teach_Flow: String
-  }
+  },
+  EvaluateFiles: [String]
 })
 module.exports = mongoose.model('file', UserSchema)

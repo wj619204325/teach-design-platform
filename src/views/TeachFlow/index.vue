@@ -10,6 +10,7 @@
       position: relative;
       .el-divider__text {
         font-size: 18px;
+        background-color: #f4f4f4;
       }
       p {
         text-indent: 2em;

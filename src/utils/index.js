@@ -1,6 +1,7 @@
  import {
      CreateOneFile
  } from '@/api'
+ import store from '@/store'
  const Teach_Env = `
  <table cellspacing="0" cellpadding="0" width="100%">
      <tbody>
@@ -111,7 +112,7 @@
          Teach_Demand: '',
          Teach_Hard: '',
          Teach_Env: Teach_Env,
-         Teach_Flow: Teach_Env,
+         Teach_Flow: Teach_Flow,
          Teach_Evaluate: ''
      }
      localStorage.setItem('Teach_Hard_Env', '')
@@ -135,8 +136,8 @@
          })
          .then(data => {
              localStorage.setItem('file_id', data.id)
-             localStorage.setItem('file_name', name)
-             localStorage.setItem('file_type', type)
+             store.commit('FILENAME', data.name)
+             store.commit('FILETYPE', data.type)
              return Promise.resolve(data.id)
          })
          .catch(err => {

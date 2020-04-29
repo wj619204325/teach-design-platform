@@ -104,17 +104,26 @@ export const ShareFile = (data) => {
   })
 }
 // 上传文件
-export const UploadFiles = (fileData) => {
+export const UploadFiles = ({
+  fileData,
+  id
+}) => {
   return request({
     url: '/file/upload',
     method: 'post',
-    data: fileData
+    data: fileData,
+    params: {
+      id
+    }
   })
 }
 
 // 获取用户文件列表
-export const GetEvalFileList = () => {
+export const GetEvalFileList = (id) => {
   return request({
-    url: '/file/getEvalFiles'
+    url: '/file/getEvalFiles',
+    params: {
+      id
+    }
   })
 }

@@ -125,8 +125,6 @@ export default {
   name: 'Layout',
   data () {
     return {
-      fileName: localStorage.getItem('file_name'),
-      fileType: localStorage.getItem('file_type'),
       filterText: '',
       activeName: '',
       isExportDisable: false,
@@ -142,6 +140,12 @@ export default {
   computed: {
     isSaved () {
       return this.$store.state.isSaved
+    },
+    fileName () {
+      return this.$store.state.fileName
+    },
+    fileType () {
+      return this.$store.state.fileType
     }
   },
   methods: {

@@ -234,13 +234,17 @@ router.post('/upload', Upload.array('file'), async (ctx) => {
   let fileList = ctx.req.files.map(file => {
     return `${file.filename},${file.originalname}`
   })
-  const username = ctx.session.passport.user.username
-
-  await UserModel.findOne({
-    username
-  }, (err, doc) => {
+  const id = ctx.query.id
+  if (!id) {
+    ctx.body = {
+      code: -1,
+      msg: ''
+    }
+    return false
+  }
+  await FileModel.findById(id, (err, doc) => {
     if (err) {
-      global.console.log("上传文件绑定用户失败，error:", err)
+      global.console.log("没有找到该文件id，error:", err)
     }
     let EvalFiles = doc.EvaluateFiles
     if (EvalFiles) {
@@ -256,16 +260,32 @@ router.post('/upload', Upload.array('file'), async (ctx) => {
   }
 })
 
-// 获取用户的教学评价文件列表
+// 获取某一教案的教学评价文件列表
 router.get('/getEvalFiles', async (ctx) => {
-  let EvaluateFiles = ctx.session.passport.user.EvaluateFiles || []
-  let list = EvaluateFiles.map(path => {
-    let file = path.split(',')
-    return {
-      url: file[0],
-      name: file[1]
+  const id = ctx.query.id
+  let result = await FileModel.findById(id)
+  if (!result) {
+    ctx.body = {
+      code: -1,
+      msg: ''
     }
-  })
+    global.console.log("没有找到该文件id")
+    return false
+  }
+  let EvaluateFiles = result.EvaluateFiles
+  let list
+  if (EvaluateFiles) {
+    list = EvaluateFiles.map(path => {
+      let file = path.split(',')
+      return {
+        url: file[0],
+        name: file[1]
+      }
+    })
+  } else {
+    list = []
+  }
+
   ctx.body = {
     code: 0,
     msg: '',

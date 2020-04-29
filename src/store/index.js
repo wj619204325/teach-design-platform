@@ -10,7 +10,9 @@ export default new Vuex.Store({
   state: {
     isSaved: true,
     session: localStorage.getItem("session"),
-    username: localStorage.getItem('username')
+    username: localStorage.getItem('username'),
+    fileName: localStorage.getItem('file_name'),
+    fileType: localStorage.getItem('file_type')
   },
   mutations: {
     "SAVED": (state) => {
@@ -27,7 +29,15 @@ export default new Vuex.Store({
     "USERNAME": (state, username) => {
       localStorage.setItem('username', username)
       state.username = username
-    }
+    },
+    "FILENAME": (state, name) => {
+      localStorage.setItem("file_name", name)
+      state.fileName = name
+    },
+    "FILETYPE": (state, type) => {
+      localStorage.setItem("file_type", type)
+      state.fileType = type
+    },
   },
   actions: {
     LogIn({

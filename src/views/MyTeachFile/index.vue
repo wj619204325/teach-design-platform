@@ -226,7 +226,7 @@
 import TemplateItem from './component/TemplateItem.vue'
 import { RenameFile, GetOneFile, ShareFile, GetFileList } from '@/api'
 import { download_word, create_new_file, init_file } from '@/utils/index'
-
+import { mapMutations } from 'vuex'
 export default {
   components: {
     TemplateItem
@@ -263,6 +263,10 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'FILENAME',
+      'FILETYPE'
+    ]),
     handleClick (tab, event) {
       // console.log(tab, event);
     },
@@ -290,8 +294,8 @@ export default {
         .then(data => {
           const { name, content, type } = data
           localStorage.setItem('file_id', id)
-          localStorage.setItem('file_type', type)
-          localStorage.setItem('file_name', name)
+          this.FILENAME(name)
+          this.FILETYPE(type)
           localStorage.setItem('content', JSON.stringify(content))
           this.$router.push({
             name: 'CourseBrief',
