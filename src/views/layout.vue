@@ -13,7 +13,7 @@
                    :to="toDesignLink">设计中心</router-link>
       <router-link class="navItem"
                    active-class="active"
-                   to="/404">教案广场</router-link>
+                   to="/TeachPost">教案广场</router-link>
       <!-- <el-menu :default-active="activeName"
                mode="horizontal"
                router>
@@ -69,7 +69,7 @@
             <i class="el-icon-edit-outline"></i>
             <span slot="title">设计中心</span>
           </el-menu-item>
-          <el-menu-item index="/404">
+          <el-menu-item index="/TeachPost">
             <i class="el-icon-s-help"></i>
             <span slot="title">教案广场</span>
           </el-menu-item>
@@ -115,7 +115,6 @@ export default {
   },
   watch: {
     '$route.path': function (newVal) {
-      console.log(newVal)
       if (newVal.includes('/design')) {
         this.activeName = '/design'
         this.toDesignLink = newVal

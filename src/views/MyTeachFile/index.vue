@@ -224,18 +224,44 @@
                      @click="createNewFile">确 定</el-button>
         </span>
       </el-dialog>
+      <el-dialog title="分享到教案广场"
+                 :visible.sync="shareFileDialog"
+                 :show-close="false"
+                 :close-on-click-modal="false"
+                 width="30%">
+        <el-input v-model="shareTitle"
+                  placeholder="请输入分享的标题"
+                  maxlength="10"
+                  show-word-limit
+                  clearable>
+        </el-input>
+        <el-input type="textarea"
+                  placeholder="请输入分享的理由或对教案的简要说明"
+                  v-model="shareDesc"
+                  maxlength="200"
+                  style="margin-top:30px;"
+                  show-word-limit>
+        </el-input>
+        <span slot="footer"
+              class="dialog-footer">
+          <el-button @click="cancelShare">取 消</el-button>
+          <el-button type="primary"
+                     :disabled="!shareTitle || !shareDesc"
+                     @click="share">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
 <script>
 import TemplateItem from './component/TemplateItem.vue'
-import { RenameFile, GetOneFile, ShareFile, GetFileList } from '@/api'
+import { RenameFile, GetOneFile, ShareFile, GetFileList, CreateNewPost } from '@/api'
 import { download_word, create_new_file, init_file } from '@/utils/index'
 import { mapMutations } from 'vuex'
-const IMG_1 = require('@/assets/blue.png')
-const IMG_2 = require('@/assets/green.png')
-const IMG_3 = require('@/assets/orange.png')
-const IMG_4 = require('@/assets/purple.png')
+const IMG_1 = require('@/assets/myFile/blue.png')
+const IMG_2 = require('@/assets/myFile/green.png')
+const IMG_3 = require('@/assets/myFile/orange.png')
+const IMG_4 = require('@/assets/myFile/purple.png')
 export default {
   components: {
     TemplateItem
@@ -256,7 +282,10 @@ export default {
       fileName: '',
       fileType: '',
       IMG_DATA: [IMG_1, IMG_2, IMG_3, IMG_4],
-      createNewFileDialog: false
+      createNewFileDialog: false,
+      shareFileDialog: false,
+      shareTitle: '',
+      shareDesc: ''
     };
   },
   watch: {
@@ -321,10 +350,25 @@ export default {
           loading.close()
         })
     },
-    share: function (id) {
-      this.$alert('该功能尚未完善，敬请期待！', '开发者提示', {
-        confirmButtonText: '确定'
+    cancelShare: function () {
+      this.shareFileDialog = false
+      this.shareTitle = ''
+      this.shareDesc = ''
+    },
+    share: function () {
+      let username = localStorage.getItem('username')
+      let id = this.curId
+      CreateNewPost({
+        fileId: id,
+        author: username,
+        title: this.shareTitle,
+        description: this.shareDesc
       })
+        .finally(() => {
+          this.shareFileDialog = false
+          this.shareTitle = ''
+          this.shareDesc = ''
+        })
     },
     rename: function (id, list, index) {
       this.curList = list
@@ -377,7 +421,8 @@ export default {
           this.open(id);
           break;
         case '分享':
-          this.share(id);
+          this.curId = id
+          this.shareFileDialog = true
           break;
         case '重命名':
           this.rename(id, list, index)
@@ -419,9 +464,7 @@ export default {
       })
     },
     goTeachPublic: function () {
-      this.$alert('该功能尚未完善，敬请期待！', '开发者提示', {
-        confirmButtonText: '确定'
-      })
+      this.$router.push('/TeachPost')
     }
   },
   mounted () {

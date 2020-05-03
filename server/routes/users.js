@@ -251,6 +251,34 @@ router.get('/getUserInfo', async (ctx) => {
     }
   }
 })
-
+//获取用户收藏、点赞的帖子
+router.get('/getUserStarLikePost', async (ctx) => {
+  if (ctx.isAuthenticated()) {
+    const username = ctx.session.passport.user.username
+    let result = await UserModel.findOne({
+      username
+    })
+    if (!result) {
+      ctx.body = {
+        code: -1,
+        msg: ''
+      }
+      return false
+    }
+    ctx.body = {
+      code: 0,
+      msg: '',
+      data: {
+        StarPosts: result.StarPosts || [],
+        LikePosts: result.LikePosts || []
+      }
+    }
+  } else {
+    ctx.body = {
+      code: -1,
+      msg: '未登录'
+    }
+  }
+})
 
 module.exports = router

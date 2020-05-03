@@ -12,7 +12,9 @@ export default new Vuex.Store({
     session: localStorage.getItem("session"),
     username: localStorage.getItem('username'),
     fileName: localStorage.getItem('file_name'),
-    fileType: localStorage.getItem('file_type')
+    fileType: localStorage.getItem('file_type'),
+    StarPosts: [],
+    LikePosts: []
   },
   mutations: {
     "SAVED": (state) => {
@@ -38,6 +40,12 @@ export default new Vuex.Store({
       localStorage.setItem("file_type", type)
       state.fileType = type
     },
+    "STARPOSTS": (state, value) => {
+      state.StarPosts = value
+    },
+    "LIKEPOSTS": (state, value) => {
+      state.LikePosts = value
+    },
   },
   actions: {
     LogIn({
@@ -54,10 +62,11 @@ export default new Vuex.Store({
       commit,
       state
     }) {
-      return Logout().then(() => {
-        commit('LOGOUT')
-        return Promise.resolve()
-      })
+      return Logout()
+        .finally(() => {
+          commit('LOGOUT')
+          return Promise.resolve()
+        })
     }
   },
   modules: {}

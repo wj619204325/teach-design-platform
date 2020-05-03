@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const UserSchema = new Schema({
   email: {
-    // unique: true,
     type: String,
     required: true
   },
@@ -15,6 +14,8 @@ const UserSchema = new Schema({
     required: true
   },
   MyFiles: [String],
-  CollectFiles: [String]
+  CollectFiles: [String],
+  LikePosts: [String],
+  StarPosts: [String]
 })
 module.exports = mongoose.model('user', UserSchema)

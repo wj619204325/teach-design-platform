@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const dbConfig = require('./dbs/config')
 const file = require('./routes/file')
 const users = require('./routes/users')
+const post = require('./routes/post')
 const session = require('koa-generic-session')
 const passport = require('./utils/passport')
 const Redis = require('koa-redis')
@@ -25,7 +26,7 @@ const session_config = {
   key: 'tsp', //前缀:加在key前面
   prefix: 'tsp:uid',
   /**  session 过期时间，以毫秒ms为单位计算 。*/
-  maxAge: 60 * 60 * 1000 * 2,
+  maxAge: 60 * 60 * 1000 * 24 * 7,
   /** 自动提交到响应头。(默认是 true) */
   autoCommit: true,
   /** 是否允许重写 。(默认是 true) */
@@ -53,7 +54,16 @@ app.use(async (ctx, next) => {
   const start = new Date()
   await next()
   const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+  let user;
+  try {
+    if (ctx.isAuthenticated()) {
+      user = ctx.session.passport.user.username
+    }
+  } catch (error) {
+
+  }
+
+  console.log(`${user}:${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 //跨域
 if (process.env.NODE_ENV !== 'production') {
@@ -83,26 +93,32 @@ const allowPath = ['/users/signup', '/users/signin', '/users/verify']
 // 请求拦截
 function Interceptor(ctx, next) {
   let url = ctx.request.url
-  global.console.log("正在访问：", url)
   // 是否在白名单
   if (allowPath.indexOf(url) !== -1) {
     return next()
   }
   // 是否在登陆状态
   if (ctx.isAuthenticated()) {
+
     return next()
   }
   ctx.status = 401
+  ctx.body = {
+    code: -1,
+    msg: '无权访问。'
+  }
 }
 app.use(async (ctx, next) => {
   await Interceptor(ctx, next)
 })
 app.use(users.routes(), users.allowedMethods())
 app.use(file.routes(), file.allowedMethods())
+app.use(post.routes(), post.allowedMethods())
 
 
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
+
 module.exports = app

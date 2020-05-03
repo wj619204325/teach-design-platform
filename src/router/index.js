@@ -23,7 +23,14 @@ const routes = [{
         },
         component: resolve => require(['views/MyTeachFile/index.vue'], resolve)
       },
-
+      {
+        path: '/TeachPost',
+        name: 'TeachPost',
+        meta: {
+          title: '教案广场'
+        },
+        component: resolve => require(['views/TeachPost/index.vue'], resolve)
+      },
       {
         path: '/design',
         component: resolve => require(['views/design/layout.vue'], resolve),

@@ -48,7 +48,7 @@ module.exports = {
         .use(CompressionPlugin, [{
           test: /\.js$|\.html$|\.css$/,
           algorithm: 'gzip',
-          threshold: 100000, //对超过100000字节的文件进行压缩
+          threshold: 10000, //对超过100000字节的文件进行压缩
           minRatio: 0.8,
           deleteOriginalAssets: false //是否删除原文件，不删除则原文件和.gz文件并存
         }])

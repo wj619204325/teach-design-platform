@@ -36,6 +36,13 @@ export const Logout = () => {
     url: '/users/logout'
   })
 }
+
+//获取用户的点赞、收藏的帖子
+export const GetStarAndLike = () => {
+  return request({
+    url: '/users/getUserStarLikePost'
+  })
+}
 // 获取用户的文件列表
 export const GetFileList = (username) => {
   return request({
@@ -124,6 +131,66 @@ export const GetEvalFileList = (id) => {
     url: '/file/getEvalFiles',
     params: {
       id
+    }
+  })
+}
+
+// 创建一个帖子
+export const CreateNewPost = (data) => {
+  return request({
+    url: '/post/createNewPost',
+    method: 'post',
+    data: data
+  })
+}
+// 获取所有帖子列表
+export const GetAllPosts = () => {
+  return request({
+    url: '/post/getAllPosts',
+  })
+}
+// 点赞一个帖子
+export const LikeOnePost = (postId) => {
+  return request({
+    url: '/post/likeOnePost',
+    params: {
+      postId
+    }
+  })
+}
+// 收藏一个帖子
+export const CollectOnePost = (data) => {
+  return request({
+    url: '/post/collectOnePost',
+    method: 'post',
+    data: data
+  })
+}
+
+// 给一个帖子添加评论
+export const AddOneComment = (data) => {
+  return request({
+    url: '/post/addOneComment',
+    method: 'post',
+    data: data
+  })
+}
+// 收藏、取消收藏、点赞、取消点赞
+export const StarOrLikePost = ({
+  username,
+  postId,
+  fileId,
+  type,
+  status
+}) => {
+  return request({
+    url: '/post/starOrLikePost',
+    params: {
+      username,
+      postId,
+      fileId,
+      type,
+      status
     }
   })
 }
