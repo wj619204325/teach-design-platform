@@ -6,6 +6,9 @@ const Router = require('koa-router')
 const router = new Router({
   prefix: '/post'
 })
+const formatSingleNum = (num) => {
+  return num > 9 ? num : `0${num}`
+}
 const getCurTime = () => {
   let date = new Date()
   let YY = date.getFullYear(),
@@ -14,7 +17,7 @@ const getCurTime = () => {
     hh = date.getHours(),
     mm = date.getMinutes(),
     ss = date.getSeconds()
-  return `${YY}-${MM}-${DD} ${hh}:${mm}:${ss}`
+  return `${formatSingleNum(YY)}-${formatSingleNum(MM)}-${formatSingleNum(DD)} ${formatSingleNum(hh)}:${formatSingleNum(mm)}:${formatSingleNum(ss)}`
 }
 
 // 创建帖子

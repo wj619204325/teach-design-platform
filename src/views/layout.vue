@@ -14,6 +14,9 @@
       <router-link class="navItem"
                    active-class="active"
                    to="/TeachPost">教案广场</router-link>
+      <router-link class="navItem"
+                   active-class="active"
+                   to="/Article">学习中心</router-link>
       <!-- <el-menu :default-active="activeName"
                mode="horizontal"
                router>
@@ -72,6 +75,10 @@
           <el-menu-item index="/TeachPost">
             <i class="el-icon-s-help"></i>
             <span slot="title">教案广场</span>
+          </el-menu-item>
+          <el-menu-item index="/Article">
+            <i class="el-icon-notebook-2"></i>
+            <span slot="title">学习中心</span>
           </el-menu-item>
         </el-menu>
       </el-aside>

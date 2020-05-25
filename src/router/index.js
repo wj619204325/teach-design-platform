@@ -32,6 +32,14 @@ const routes = [{
         component: resolve => require(['views/TeachPost/index.vue'], resolve)
       },
       {
+        path: '/Article',
+        name: 'Article',
+        meta: {
+          title: '学习中心'
+        },
+        component: resolve => require(['views/Article/index.vue'], resolve)
+      },
+      {
         path: '/design',
         component: resolve => require(['views/design/layout.vue'], resolve),
         redirect: '/design/CourseBrief',
