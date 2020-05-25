@@ -82,7 +82,7 @@
             <p style="font-family:'微软雅黑,sans-serif';margin:20px 0;">请扫描二维码关注公众号了解更多</p>
             <img :src="imgUrl"
                  width="250"
-                 height="300"
+                 height="250"
                  alt="公众号二维码">
           </ul>
         </el-col>
@@ -91,7 +91,7 @@
   </div>
 </template>
 <script>
-const QR = require('@/assets/qr.png')
+const QR = require('@/assets/qr.jpg')
 import ArticleList from './data'
 export default {
   data () {
