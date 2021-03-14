@@ -83,6 +83,9 @@
     color: transparent;
     border-style: dashed;
   }
+  .edui-editor-iframeholder.edui-default {
+    height: 280px !important;
+  }
 }
 </style>
 

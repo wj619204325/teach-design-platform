@@ -19,6 +19,9 @@
       margin: 0 auto;
     }
   }
+  .edui-editor-iframeholder.edui-default {
+    height: 340px !important;
+  }
 }
 </style>
 <template>

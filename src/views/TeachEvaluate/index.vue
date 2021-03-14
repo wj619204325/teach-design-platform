@@ -41,6 +41,9 @@
       }
     }
   }
+  .edui-editor-iframeholder.edui-default {
+    height: 380px !important;
+  }
 }
 .cellClass:hover {
   background-color: #b5b5b5 !important;
