@@ -98,13 +98,6 @@
                        @click="reset"
                        round
                        size="small">全部清空</el-button>
-            <el-button icon="el-icon-folder-add"
-                       @click="changeType"
-                       round
-                       :loading="changeTypeLoading"
-                       size="small">
-              {{`另存为${fileType==='template'?'教案':'模板'}`}}
-            </el-button>
             <span class="fileType-text">
               {{`当前文件类型：${fileType==='template'?'模板':'教案'}`}}
             </span>

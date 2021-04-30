@@ -146,10 +146,6 @@
         <div v-show="checkedList.length>0">
           <el-button class="button-new-tag"
                      size="small"
-                     icon="el-icon-circle-plus"
-                     @click="showInput">添加</el-button>
-          <el-button class="button-new-tag"
-                     size="small"
                      :icon="tagClosable?'el-icon-success':'el-icon-remove'"
                      @click="delOrDoneBtn">{{`${tagClosable?'完成':'删除'}`}}</el-button>
         </div>
@@ -290,18 +286,6 @@ export default {
       this.clickCheckedTagIndex = -1
       this.isDemand = true
       this.msgUpdate(tag)
-    },
-    // “添加”按钮执行方法
-    showInput () {
-      let id = this.checkedList.length + 1
-      this.clickCheckedTagIndex = -1
-      this.curTitle = '自定义'
-      this.curDemand = '教师可自定义其他教学活动添加至流程中。'
-      // 添加一个空标签
-      this.checkedList.push({ id: id, title: '', demand: '', time: 0, activeContent: '', files: '' });
-      this.$nextTick(_ => {
-        this.$refs.saveTagInput[0].focus()
-      });
     },
     // "删除"按钮执行方法
     delOrDoneBtn () {

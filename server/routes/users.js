@@ -141,6 +141,7 @@ router.post('/verify', async (ctx, next) => {
     expire: Email.smtp.expire(),
     email: email
   }
+  console.log("验证码：",receiver.code)
   let mailOptions = {
     from: `教学设计软件平台<1120681908@qq.com>`,
     to: receiver.email,

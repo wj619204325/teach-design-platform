@@ -32,11 +32,6 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item icon="el-icon-document-add"
                               command="design">新建空白教案</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-document-copy"
-                              command="template">新建模板</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-document"
-                              divided
-                              command="createFromTem">从模板中新建教案</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <el-dropdown @command="handleCommand">

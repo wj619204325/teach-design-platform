@@ -25,7 +25,7 @@ module.exports = {
       return '1120681908@qq.com'
     },
     get pass() {
-      return 'rcfhpzzczzbubabi'
+      return 'luwvvqvqbafgfibg'
     },
     get code() {
       return () => {

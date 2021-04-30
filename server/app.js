@@ -95,6 +95,7 @@ function Interceptor(ctx, next) {
   let url = ctx.request.url
   // 是否在白名单
   if (allowPath.indexOf(url) !== -1) {
+    debugger
     return next()
   }
   // 是否在登陆状态

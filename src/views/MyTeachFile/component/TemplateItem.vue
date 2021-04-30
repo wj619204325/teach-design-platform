@@ -83,11 +83,6 @@
               :data-id="fileId"
               :data-index="index"
               class="el-icon-folder-opened"></span>
-        <span title="分享"
-              :data-id="fileId"
-              :data-index="index"
-              class="el-icon-share">
-        </span>
         <span title="重命名"
               :data-id="fileId"
               :data-index="index"
