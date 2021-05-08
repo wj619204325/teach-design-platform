@@ -95,7 +95,7 @@
                     size="small"
                     border
                     :header-cell-style="headerCellStyle"
-                    @cell-click="cellClickEvent">
+                   >
             <el-table-column label="认知目标"
                              prop="name"
                              align="center">
@@ -116,18 +116,12 @@
                                align="center"
                                :key="i">
                 <template slot-scope="scope">
-                  <el-tooltip placement="top"
-                              popper-class="table-tooltip"
-                              :enterable="false">
-                    <div slot="content">{{scope.row[`word${i}`]['name']}}范例：<br />{{scope.row[`word${i}`]['value']}}</div>
                     <div>{{scope.row[`word${i}`]['name']}}</div>
-                  </el-tooltip>
                 </template>
               </el-table-column>
             </template>
 
           </el-table>
-          <i>提示：点击动词查看具体范例</i>
         </div>
         <!-- 范  例 -->
         <div class="example-content"
@@ -213,14 +207,6 @@ export default {
     setColSpan: function () {
       // var x = document.getElementsByClassName("el-table__header")[0].rows[0].cells;
       // x[1].colSpan = 5
-    },
-    cellClickEvent (row, column, cell, event) {
-      let col = column.property
-      if (col === 'name') return
-      this.showTable = false
-      let word = row[col]
-      this.wordName = word.name
-      this.wordValue = word.value
     },
 
     headerCellStyle ({ row, column, rowIndex, columnIndex }) {

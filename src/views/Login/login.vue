@@ -107,7 +107,7 @@ export default {
 /* 修复input 背景不协调 和光标变色 */
 
 $bg: #283443;
-$light_gray: #fff;
+$light_gray: #272424;
 $cursor: #fff;
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -156,7 +156,7 @@ $cursor: #fff;
 <style lang="scss" scoped>
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
-$light_gray: #eee;
+$light_gray: #272424;
 $imgUrl: url("../.././assets/login.png");
 
 .login-container {

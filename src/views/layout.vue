@@ -11,27 +11,12 @@
       <router-link class="navItem"
                    active-class="active"
                    :to="toDesignLink">设计中心</router-link>
-      <router-link class="navItem"
-                   active-class="active"
-                   to="/TeachPost">教案广场</router-link>
-      <!-- <router-link class="navItem"
-                   active-class="active"
-                   to="/Article">学习中心</router-link> -->
-      <!-- <el-menu :default-active="activeName"
-               mode="horizontal"
-               router>
-        <el-menu-item index="/MyTeachFile">教案中心</el-menu-item>
-        <el-menu-item index="/design">设计中心</el-menu-item>
-        <el-menu-item index="/404">教案广场</el-menu-item>
-      </el-menu> -->
       <div class="right-nav">
         <el-dropdown @command="handleCommand1">
           <el-button icon="el-icon-plus"
                      class="add-btn"
                      size="mini"></el-button>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-document-add"
-                              command="design">新建空白教案</el-dropdown-item>
             <el-dropdown-item icon="el-icon-document-copy"
                               command="template">新建模板</el-dropdown-item>
             <el-dropdown-item icon="el-icon-document"
@@ -72,14 +57,6 @@
             <i class="el-icon-edit-outline"></i>
             <span slot="title">设计中心</span>
           </el-menu-item>
-          <el-menu-item index="/TeachPost">
-            <i class="el-icon-s-help"></i>
-            <span slot="title">教案广场</span>
-          </el-menu-item>
-          <!-- <el-menu-item index="/Article">
-            <i class="el-icon-notebook-2"></i>
-            <span slot="title">学习中心</span>
-          </el-menu-item> -->
         </el-menu>
       </el-aside>
       <el-main>

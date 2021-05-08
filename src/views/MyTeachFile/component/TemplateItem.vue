@@ -83,11 +83,6 @@
               :data-id="fileId"
               :data-index="index"
               class="el-icon-folder-opened"></span>
-        <span title="分享"
-              :data-id="fileId"
-              :data-index="index"
-              class="el-icon-share">
-        </span>
         <span title="重命名"
               :data-id="fileId"
               :data-index="index"
@@ -134,10 +129,6 @@ export default {
         {
           title: '打开',
           icon: 'el-icon-folder-opened'
-        },
-        {
-          title: '分享',
-          icon: 'el-icon-share'
         },
         {
           title: '重命名',
