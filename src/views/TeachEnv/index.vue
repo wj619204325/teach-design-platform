@@ -42,6 +42,7 @@
     border-radius: 10px;
     border: 1px solid #ebeef5;
     font-weight: bolder;
+    font-size: 16px;
   }
   .intro-content:hover {
     box-shadow: 3px 3px 10px #888888;
