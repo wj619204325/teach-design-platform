@@ -1,1 +1,1 @@
-const Mock = require('mockjs');
+const Mock = require('mockjs')
